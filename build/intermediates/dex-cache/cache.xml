@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\git_repositories\OneClickCall_AS\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\jars\libs\internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="C:\git_repositories\OneClickCall_AS\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-bd8e0236761cebbdbb5ce5cffef1560dfd6531d4.jar" />
+    </item>
+    <item
+        jar="C:\git_repositories\OneClickCall_AS\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="C:\git_repositories\OneClickCall_AS\app\build\intermediates\pre-dexed\debug\classes-14d1aa23e1565d4e506f02655c03c02d14d23f10.jar" />
+    </item>
+    <item
+        jar="C:\Users\Irina\AppData\Local\Android\sdk1\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="C:\git_repositories\OneClickCall_AS\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-d14e3c1e8e3bc87f7e97a30585fe9a28f0693b2b.jar" />
+    </item>
+    <item
+        jar="C:\git_repositories\OneClickCall_AS\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="C:\git_repositories\OneClickCall_AS\app\build\intermediates\pre-dexed\debug\classes-b5770b3e8f309029b9b6876a8c354de1746f2bb4.jar" />
+    </item>
+
+</items>

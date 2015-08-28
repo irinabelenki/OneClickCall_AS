@@ -1,26 +1,51 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="#FFFFFF"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/buttonCreateShortcut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:src="@android:drawable/ic_input_add" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_toRightOf="@+id/buttonCreateShortcut"
+            android:text="@string/shortcuts"
+            android:textColor="#000"
+            android:textSize="30sp" />
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="60dp"
         android:alwaysDrawnWithCache="true"
         android:dividerHeight="1dp"
         android:horizontalSpacing="3dp"
         android:scrollingCache="true"
         android:smoothScrollbar="true"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="3dp"
-        android:layout_marginBottom="30dp" />
+        android:verticalSpacing="3dp" />
 
-    <Button
-        android:id="@+id/buttonPickContact"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/pick_contact" />
-
-</LinearLayout>
+</RelativeLayout>

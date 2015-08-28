@@ -6,7 +6,9 @@
     <string name="action_settings">Settings</string>
     <string name="pick_contact">Pick contact</string>
     <string name="menu_recreate">Recreate</string>
-    <string name="menu_edit">Edit</string>
+    <string name="menu_edit_call_app">Edit call application</string>
+    <string name="menu_edit_number">Edit number</string>
     <string name="menu_delete">Delete</string>
+    <string name="shortcuts">Shortcuts</string>
 
 </resources>

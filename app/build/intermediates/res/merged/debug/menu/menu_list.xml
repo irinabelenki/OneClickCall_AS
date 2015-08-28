@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/recreate"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="@string/menu_recreate"/>
+
+    <item
+        android:id="@+id/edit_call_app"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="@string/menu_edit_call_app"/>
+    <item
+        android:id="@+id/edit_number"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="@string/menu_edit_number"/>
+
+    <item
+        android:id="@+id/delete"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="@string/menu_delete"/>
+
+</menu><!-- From: file:/C:/git_repositories/OneClickCall_AS/app/src/main/res/menu/menu_list.xml -->
