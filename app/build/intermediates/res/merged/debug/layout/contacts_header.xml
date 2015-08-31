@@ -8,11 +8,11 @@
     android:gravity="center">
 
     <TextView
-        android:id="@+id/contact_name"
+        android:id="@+id/contact_name_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="Name"
+        android:text="Contact Name"
         android:textColor="#000"
         android:textSize="30sp" />
 </RelativeLayout><!-- From: file:/C:/git_repositories/OneClickCall_AS/app/src/main/res/layout/contacts_header.xml -->

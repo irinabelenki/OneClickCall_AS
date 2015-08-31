@@ -35,6 +35,10 @@
             android:name="com.example.oneclickcall.CallAppActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name="com.example.oneclickcall.ShortcutActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>

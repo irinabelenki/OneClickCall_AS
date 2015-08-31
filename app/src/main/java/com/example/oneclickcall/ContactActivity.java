@@ -1,4 +1,4 @@
-package com.example.oneclickcall;
+  package com.example.oneclickcall;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,7 +128,7 @@ public class ContactActivity extends ListActivity implements
                     packageManager.getApplicationLabel(info.activityInfo.applicationInfo).toString(),
                     phoneNumberTextView.getText().toString(),
                     info.activityInfo.packageName,
-                    info.activityInfo.name));
+                    info.activityInfo.name, ""));
             finish();
         } else {
             Intent intent = new Intent(this, CallAppActivity.class);
@@ -156,7 +156,7 @@ public class ContactActivity extends ListActivity implements
                                 item.getName(),
                                 phoneNumberTextView.getText().toString(),
                                 item.getPackageName(),
-                                item.getClassName()));
+                                item.getClassName(), ""));
 
                     }
                     break;

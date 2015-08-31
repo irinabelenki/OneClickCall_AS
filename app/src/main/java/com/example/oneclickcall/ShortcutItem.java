@@ -1,12 +1,18 @@
 package com.example.oneclickcall;
 
-public class ShortcutItem {
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ShortcutItem implements Parcelable {
     private int id;
     private String name;
     private String application;
     private String phone;
     private String packageName;
     private String className;
+    private String contactId;
 
     public ShortcutItem() {
         this.id = -1;
@@ -14,7 +20,7 @@ public class ShortcutItem {
 
     public ShortcutItem(int id, String name, String application,
                         String phone,
-                        String packageName, String className) {
+                        String packageName, String className, String contactId) {
         super();
         this.id = id;
         this.name = name;
@@ -22,16 +28,38 @@ public class ShortcutItem {
         this.phone = phone;
         this.packageName = packageName;
         this.className = className;
+        this.contactId = contactId;
     }
 
     public ShortcutItem(String name, String application, String phone,
-                        String packageName, String className) {
+                        String packageName, String className, String contactId) {
         super();
         this.name = name;
         this.application = application;
         this.phone = phone;
         this.packageName = packageName;
         this.className = className;
+        this.contactId = contactId;
+    }
+
+    public ShortcutItem(ShortcutItem other) {
+        id = other.getId();
+        name = other.getName();
+        application = other.getApplication();
+        phone = other.getPhone();
+        packageName = other.getPackageName();
+        className = other.getClassName();
+        contactId = other.getContactId();
+    }
+
+    public ShortcutItem(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        application = in.readString();
+        phone = in.readString();
+        packageName = in.readString();
+        className = in.readString();
+        contactId = in.readString();
     }
 
     public int getId() {
@@ -83,11 +111,55 @@ public class ShortcutItem {
         this.className = className;
     }
 
+    public String getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(String contactId) {
+        this.contactId = contactId;
+    }
+
     @Override
     public String toString() {
         return "ShortcutItem: id=" + id + ", name=" + name +
                 ", application=" + application + ", phone=" + phone +
-                ", packageName=" + packageName + ", className=" + className;
+                ", packageName=" + packageName + ", className=" + className +
+                ", contactId=" + contactId;
+    }
+
+    @Override
+    public int describeContents() {
+        return this.hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(application);
+        dest.writeString(phone);
+        dest.writeString(packageName);
+        dest.writeString(className);
+        dest.writeString(contactId);
+    }
+
+    public static final Parcelable.Creator<ShortcutItem> CREATOR = new Parcelable.Creator<ShortcutItem>() {
+        public ShortcutItem createFromParcel(Parcel in) {
+            return new ShortcutItem(in);
+        }
+
+        public ShortcutItem[] newArray(int size) {
+            return new ShortcutItem[size];
+
+        }
+    };
+
+    public boolean isFilled() {
+        if (name != null && application != null && phone != null &&
+                packageName != null && className != null &&
+                contactId != null)
+            return true;
+        return false;
     }
 
 }

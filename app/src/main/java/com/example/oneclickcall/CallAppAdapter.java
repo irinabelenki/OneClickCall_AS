@@ -43,7 +43,7 @@ public class CallAppAdapter extends ArrayAdapter<CallAppItem> {
         }
 
         holder.callAppName.setText(rowItem.getName());
-        holder.callAppImage.setImageResource(android.R.drawable.ic_menu_save);
+        holder.callAppImage.setImageDrawable(rowItem.getImage());
 
         return convertView;
     }

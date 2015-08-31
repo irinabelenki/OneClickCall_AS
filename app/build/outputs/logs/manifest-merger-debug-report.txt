@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:2:1-40:12
+ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:2:1-44:12
 	package
 		ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:3:5-39
 		INJECTED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml
@@ -42,7 +42,7 @@ ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:
 	android:name
 		ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:14:22-69
 application
-ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:16:5-38:19
+ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:16:5-42:19
 MERGED from [com.android.support:appcompat-v7:21.0.3] C:\git_repositories\OneClickCall_AS\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\AndroidManifest.xml:16:5-19
 MERGED from [com.android.support:support-v4:21.0.3] C:\git_repositories\OneClickCall_AS\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\AndroidManifest.xml:16:5-19
 	android:label
@@ -81,3 +81,9 @@ ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:
 		ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:36:13-45
 	android:name
 		ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:35:13-44
+activity#com.example.oneclickcall.ShortcutActivity
+ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:38:9-41:20
+	android:label
+		ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:40:13-45
+	android:name
+		ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:39:13-45

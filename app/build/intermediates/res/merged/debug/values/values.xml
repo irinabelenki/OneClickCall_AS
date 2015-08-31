@@ -165,8 +165,7 @@
     <string name="app_name">OneClickCall</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_delete">Delete</string>
-    <string name="menu_edit_call_app">Edit call application</string>
-    <string name="menu_edit_number">Edit number</string>
+    <string name="menu_edit">Edit</string>
     <string name="menu_recreate">Recreate</string>
     <string name="pick_contact">Pick contact</string>
     <string name="shortcuts">Shortcuts</string>

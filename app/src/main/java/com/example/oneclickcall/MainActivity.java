@@ -29,17 +29,15 @@ import android.widget.ListView;
 public class MainActivity extends Activity implements
         AdapterView.OnItemClickListener {
 
-    public static final String CONTACT_ID = "CONTACT_ID";
     public static final String TAG = "MainActivity";
-    public static final String APPS_LIST = "APPS_LIST";
-    public static final String POSITION = "POSITION";
+    public static final String CONTACT_ID = "CONTACT_ID";
+    public static final String SHORTCUT_ITEM = "SHORTCUT_ITEM";
     private static final int CONTACT_PICKER_RESULT = 1001;
-    private static final int CALL_APP_PICKER_RESULT = 1002;
+    private static final int SHORTCUT_ACTIVITY_RESULT = 1003;
     ShortcutDBHelper db = new ShortcutDBHelper(this);
     private ListView listView;
     private List<ShortcutItem> shortcutItems;
     private ShortcutAdapter shortcutAdapter;
-    private ArrayList<CallAppItem> appsList;
     private ShortcutItem selectedShortcutItem;
 
     @Override
@@ -60,13 +58,11 @@ public class MainActivity extends Activity implements
 
         shortcutItems = db.getAllShortcuts();
         Log.v(MainActivity.TAG, "ON_CREATE Count of shortcut items: " + shortcutItems.size());
-        if (shortcutItems.size() > 0) {
-            listView = (ListView) findViewById(R.id.listView);
-            shortcutAdapter = new ShortcutAdapter(this, R.layout.shortcut_list_item, shortcutItems);
-            listView.setAdapter(shortcutAdapter);
-            listView.setOnItemClickListener(this);
-            registerForContextMenu(listView);
-        }
+        listView = (ListView) findViewById(R.id.listView);
+        shortcutAdapter = new ShortcutAdapter(this, R.layout.shortcut_list_item, shortcutItems);
+        listView.setAdapter(shortcutAdapter);
+        listView.setOnItemClickListener(this);
+        registerForContextMenu(listView);
     }
 
     @Override
@@ -98,11 +94,10 @@ public class MainActivity extends Activity implements
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo) item.getMenuInfo();
-        selectedShortcutItem = (ShortcutItem) shortcutAdapter
-                .getItem(menuInfo.position);
-        switch (item.getItemId()) {
+    public boolean onContextItemSelected(MenuItem menuItem) {
+        AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo) menuItem.getMenuInfo();
+        selectedShortcutItem = shortcutAdapter.getItem(menuInfo.position);
+        switch (menuItem.getItemId()) {
             case R.id.recreate:
                 ShortcutEditor.addShortcut(this,
                         selectedShortcutItem.getName(),
@@ -110,36 +105,10 @@ public class MainActivity extends Activity implements
                         selectedShortcutItem.getPackageName(),
                         selectedShortcutItem.getClassName());
                 return true;
-            case R.id.edit_call_app:
-                PackageManager packageManager = getPackageManager();
-                //Intent callIntent = new Intent(Intent.ACTION_CALL, null);
-                Intent callIntent = new Intent("android.intent.action.CALL_PRIVILEGED", null);
-                callIntent.setData(Uri.parse("tel:" + "1234567890"));
-                List<ResolveInfo> resolveInfos = packageManager.queryIntentActivities(callIntent, 0);
-
-                if (resolveInfos.size() == 0) {
-                    Log.i(MainActivity.TAG, "No call application");
-                } else {
-                    Log.i(MainActivity.TAG, "Call apps list size: " + resolveInfos.size());
-                    appsList = new ArrayList<CallAppItem>();
-                    for (ResolveInfo info : resolveInfos) {
-                        //ApplicationInfo appInfo = info.activityInfo.applicationInfo;
-                        Drawable icon = packageManager.getApplicationIcon(info.activityInfo.applicationInfo);
-                        String label = packageManager.getApplicationLabel(info.activityInfo.applicationInfo).toString();
-                        Log.v(MainActivity.TAG, "Name: " + label);
-                        appsList.add(new CallAppItem(label, icon, info.activityInfo.packageName, info.activityInfo.name));
-                    }
-                }
-                if (resolveInfos.size() == 1) {
-                    Log.i(MainActivity.TAG, "Only one call application");
-                } else {
-                    Intent intent = new Intent(this, CallAppActivity.class);
-                    intent.putParcelableArrayListExtra(APPS_LIST, appsList);
-                    startActivityForResult(intent, CALL_APP_PICKER_RESULT);
-                }
-                return true;
-            case R.id.edit_number:
-                //TODO
+            case R.id.edit:
+                Intent intent = new Intent(this, ShortcutActivity.class);
+                intent.putExtra(SHORTCUT_ITEM, selectedShortcutItem);
+                startActivityForResult(intent, SHORTCUT_ACTIVITY_RESULT);
                 return true;
             case R.id.delete:
                 ShortcutEditor.removeShortcut(this,
@@ -151,7 +120,7 @@ public class MainActivity extends Activity implements
                 updateList();
                 return true;
             default:
-                return super.onContextItemSelected(item);
+                return super.onContextItemSelected(menuItem);
         }
     }
 
@@ -165,8 +134,7 @@ public class MainActivity extends Activity implements
     }
 
     private void pickContact() {
-        Intent intent = new Intent(Intent.ACTION_PICK,
-                ContactsContract.Contacts.CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         startActivityForResult(intent, CONTACT_PICKER_RESULT);
     }
 
@@ -182,37 +150,15 @@ public class MainActivity extends Activity implements
                         Log.v(TAG, "Contact uri: " + uri.toString());
                         String contactId = uri.getLastPathSegment();
 
-                        Intent i = new Intent(this, ContactActivity.class);
-                        i.putExtra(CONTACT_ID, contactId);
-                        startActivity(i);
+                        Intent intent = new Intent(this, ShortcutActivity.class);
+                        intent.putExtra(CONTACT_ID, contactId);
+                        startActivityForResult(intent, SHORTCUT_ACTIVITY_RESULT);
                     } catch (Exception e) {
                         Log.e(TAG, "Failed to get phone data", e);
                     }
                     break;
-                case CALL_APP_PICKER_RESULT:
-                    int position = data.getIntExtra(POSITION, -1);
-                    Log.i(MainActivity.TAG, "returned position in application list:" + position);
-                    if (position >= 0) {
-                        ShortcutEditor.removeShortcut(this,
-                                selectedShortcutItem.getName(),
-                                selectedShortcutItem.getPhone(),
-                                selectedShortcutItem.getPackageName(),
-                                selectedShortcutItem.getClassName());
-
-                        CallAppItem item = appsList.get(position);
-                        ShortcutEditor.addShortcut(this,
-                                selectedShortcutItem.getName(),
-                                selectedShortcutItem.getPhone(),
-                                item.getPackageName(),
-                                item.getClassName());
-                        db.updateShortcut(new ShortcutItem(selectedShortcutItem.getId(),
-                                selectedShortcutItem.getName(),
-                                item.getName(),
-                                selectedShortcutItem.getPhone(),
-                                item.getPackageName(),
-                                item.getClassName()));
-                        updateList();
-                    }
+                case SHORTCUT_ACTIVITY_RESULT:
+                    updateList();
                     break;
             }
         } else {
@@ -223,8 +169,6 @@ public class MainActivity extends Activity implements
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
-        // TODO Auto-generated method stub
-
     }
 
 }

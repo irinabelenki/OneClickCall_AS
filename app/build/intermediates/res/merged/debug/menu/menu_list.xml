@@ -7,13 +7,9 @@
         android:title="@string/menu_recreate"/>
 
     <item
-        android:id="@+id/edit_call_app"
+        android:id="@+id/edit"
         android:icon="@android:drawable/ic_menu_edit"
-        android:title="@string/menu_edit_call_app"/>
-    <item
-        android:id="@+id/edit_number"
-        android:icon="@android:drawable/ic_menu_edit"
-        android:title="@string/menu_edit_number"/>
+        android:title="@string/menu_edit"/>
 
     <item
         android:id="@+id/delete"

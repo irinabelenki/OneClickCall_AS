@@ -20,9 +20,10 @@ public class ShortcutDBHelper extends SQLiteOpenHelper {
     private static final String COLUMN_PHONE = "phone";
     private static final String COLUMN_PACKAGE_NAME = "package_name";
     private static final String COLUMN_CLASS_NAME = "class_name";
+    private static final String COLUMN_CONTACT_ID = "contact_id";
 
     private static final String[] COLUMNS = {COLUMN_ID, COLUMN_NAME,
-            COLUMN_APPLICATION, COLUMN_PHONE, COLUMN_PACKAGE_NAME, COLUMN_CLASS_NAME};
+            COLUMN_APPLICATION, COLUMN_PHONE, COLUMN_PACKAGE_NAME, COLUMN_CLASS_NAME, COLUMN_CONTACT_ID};
 
     public ShortcutDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -36,7 +37,8 @@ public class ShortcutDBHelper extends SQLiteOpenHelper {
                 + COLUMN_APPLICATION + " TEXT, "
                 + COLUMN_PHONE + " TEXT, "
                 + COLUMN_PACKAGE_NAME + " TEXT, "
-                + COLUMN_CLASS_NAME + " TEXT )";
+                + COLUMN_CLASS_NAME + " TEXT, "
+                + COLUMN_CONTACT_ID + " TEXT )";
         db.execSQL(CREATE_BOOK_TABLE);
     }
 
@@ -54,6 +56,7 @@ public class ShortcutDBHelper extends SQLiteOpenHelper {
         values.put(COLUMN_PHONE, item.getPhone());
         values.put(COLUMN_PACKAGE_NAME, item.getPackageName());
         values.put(COLUMN_CLASS_NAME, item.getClassName());
+        values.put(COLUMN_CONTACT_ID, item.getContactId());
 
         long id = db.insert(TABLE_NAME, null, values);
         db.close();
@@ -68,11 +71,14 @@ public class ShortcutDBHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
-            item = new ShortcutItem(cursor.getString(0),
+            item = new ShortcutItem(
+                    Integer.parseInt(cursor.getString(0)),
                     cursor.getString(1),
                     cursor.getString(2),
                     cursor.getString(3),
-                    cursor.getString(4));
+                    cursor.getString(4),
+                    cursor.getString(5),
+                    cursor.getString(6));
             Log.v(MainActivity.TAG, "GET:" + item.toString());
         }
         return item;
@@ -94,6 +100,7 @@ public class ShortcutDBHelper extends SQLiteOpenHelper {
                 item.setPhone(cursor.getString(3));
                 item.setPackageName(cursor.getString(4));
                 item.setClassName(cursor.getString(5));
+                item.setContactId(cursor.getString(6));
                 items.add(item);
                 Log.v(MainActivity.TAG, "GET ALL:" + item.toString());
             } while (cursor.moveToNext());
@@ -109,6 +116,7 @@ public class ShortcutDBHelper extends SQLiteOpenHelper {
         values.put(COLUMN_PHONE, item.getPhone());
         values.put(COLUMN_PACKAGE_NAME, item.getPackageName());
         values.put(COLUMN_CLASS_NAME, item.getClassName());
+        values.put(COLUMN_CONTACT_ID, item.getContactId());
         Log.v(MainActivity.TAG, "UPDATE:" + item.toString());
 
         int i = db.update(TABLE_NAME, values, COLUMN_ID + " = ?",

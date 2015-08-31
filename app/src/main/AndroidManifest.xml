@@ -35,6 +35,10 @@
             android:name=".CallAppActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name=".ShortcutActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>
