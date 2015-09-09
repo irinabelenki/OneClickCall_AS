@@ -1,51 +1,43 @@
-<!--LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" -->
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="#FFFFFF"
-        android:gravity="center">
-
-        <ImageButton
-            android:id="@+id/buttonCreateShortcut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:src="@android:drawable/ic_input_add" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_margin="5dp"
-            android:layout_toRightOf="@+id/buttonCreateShortcut"
             android:text="@string/shortcuts"
             android:textColor="#000"
             android:textSize="30sp" />
-    </RelativeLayout>
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:alwaysDrawnWithCache="true"
+            android:dividerHeight="1dp"
+            android:horizontalSpacing="3dp"
+            android:scrollingCache="true"
+            android:smoothScrollbar="true"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="3dp" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/buttonCreateShortcut"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="60dp"
-        android:alwaysDrawnWithCache="true"
-        android:dividerHeight="1dp"
-        android:horizontalSpacing="3dp"
-        android:scrollingCache="true"
-        android:smoothScrollbar="true"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="3dp" />
-
-</RelativeLayout>
+        android:layout_gravity="right|bottom"
+        android:layout_margin="5dip"
+        android:padding="5dip"
+        android:src="@android:drawable/ic_input_add" />
+</FrameLayout>

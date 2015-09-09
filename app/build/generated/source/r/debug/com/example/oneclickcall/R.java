@@ -1320,8 +1320,8 @@ containing a value of this type.
         public static final int always=0x7f0b0016;
         public static final int beginning=0x7f0b0013;
         public static final int buttonCreateShortcut=0x7f0b0040;
-        public static final int call_app_image=0x7f0b0042;
-        public static final int call_app_name=0x7f0b0043;
+        public static final int call_app_image=0x7f0b0041;
+        public static final int call_app_name=0x7f0b0042;
         public static final int call_application=0x7f0b004b;
         public static final int cancel=0x7f0b004d;
         public static final int checkbox=0x7f0b0029;
@@ -1342,14 +1342,14 @@ containing a value of this type.
         public static final int end=0x7f0b0014;
         public static final int expand_activities_button=0x7f0b0022;
         public static final int expanded_menu=0x7f0b0028;
-        public static final int header=0x7f0b003f;
+        public static final int header=0x7f0b0043;
         public static final int home=0x7f0b0004;
         public static final int homeAsUp=0x7f0b000d;
         public static final int icon=0x7f0b0026;
         public static final int ifRoom=0x7f0b0018;
         public static final int image=0x7f0b0023;
         public static final int listMode=0x7f0b0009;
-        public static final int listView=0x7f0b0041;
+        public static final int listView=0x7f0b003f;
         public static final int list_item=0x7f0b0025;
         public static final int middle=0x7f0b0015;
         public static final int never=0x7f0b0019;
