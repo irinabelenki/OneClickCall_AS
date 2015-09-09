@@ -34,10 +34,10 @@
 
     <ImageButton
         android:id="@+id/buttonCreateShortcut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_gravity="right|bottom"
         android:layout_margin="5dip"
         android:padding="5dip"
-        android:src="@android:drawable/ic_input_add" />
+        android:background="@android:drawable/ic_input_add" />
 </FrameLayout><!-- From: file:/C:/git_repositories/OneClickCall_AS/app/src/main/res/layout/activity_main.xml -->
