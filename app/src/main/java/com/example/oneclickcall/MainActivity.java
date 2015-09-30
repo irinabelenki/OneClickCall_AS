@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
@@ -23,6 +26,8 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -40,6 +45,9 @@ public class MainActivity extends Activity implements
     private ShortcutAdapter shortcutAdapter;
     private ShortcutItem selectedShortcutItem;
 
+    public static final String ONE_CLICK_CALL_PREFS = "ONE_CLICK_CALL_PREFS";
+    public static final String DO_NOT_SHOW_DIALOG = "DO_NOT_SHOW_DIALOG";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +60,13 @@ public class MainActivity extends Activity implements
 
             @Override
             public void onClick(View v) {
-                pickContact();
+                SharedPreferences prefs = getSharedPreferences(ONE_CLICK_CALL_PREFS, MODE_PRIVATE);
+                boolean doNotShowDialog = prefs.getBoolean(DO_NOT_SHOW_DIALOG, false);
+                if (!doNotShowDialog) {
+                    showHelpDialog();
+                } else {
+                    pickContact();
+                }
             }
         });
 
@@ -63,6 +77,37 @@ public class MainActivity extends Activity implements
         listView.setAdapter(shortcutAdapter);
         listView.setOnItemClickListener(this);
         registerForContextMenu(listView);
+    }
+
+    private void showHelpDialog() {
+        View checkBoxView = View.inflate(this, R.layout.help_dialog, null);
+        CheckBox checkBox = (CheckBox) checkBoxView.findViewById(R.id.do_not_show_checkbox);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferences.Editor editor = getSharedPreferences(ONE_CLICK_CALL_PREFS, MODE_PRIVATE).edit();
+                editor.putBoolean(DO_NOT_SHOW_DIALOG, isChecked);
+                editor.commit();
+            }
+        });
+        checkBox.setText(R.string.do_not_show_again);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.help);
+        builder.setMessage(R.string.help_message)
+                .setView(checkBoxView)
+                .setCancelable(false)
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        pickContact();
+                    }
+                })
+                .show();
     }
 
     @Override

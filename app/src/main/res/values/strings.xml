@@ -9,5 +9,10 @@
     <string name="menu_edit">Edit</string>
     <string name="menu_delete">Delete</string>
     <string name="shortcuts">Shortcuts</string>
+    <string name="do_not_show_again">Do not show again</string>
+    <string name="help">Help</string>
+    <string name="help_message">Next screen will show you list of contacts. Choose a contact, and you will receive list of contact phone numbers. Choose a phone number for your shortcut.</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

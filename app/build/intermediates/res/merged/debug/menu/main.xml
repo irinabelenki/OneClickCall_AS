@@ -5,9 +5,14 @@
 
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="1"
         android:title="@string/action_settings"
-        app:showAsAction="never"/>
+        app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="2"
+        app:showAsAction="ifRoom"
+        android:title="About"/>
 </menu>
 <!-- From: file:/C:/git_repositories/OneClickCall_AS/app/src/main/res/menu/main.xml -->
