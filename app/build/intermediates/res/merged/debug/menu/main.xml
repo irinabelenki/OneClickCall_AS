@@ -4,15 +4,10 @@
     tools:context="com.example.oneclickcall.MainActivity" >
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_help"
         android:orderInCategory="1"
-        android:title="@string/action_settings"
-        app:showAsAction="ifRoom"/>
+        android:title="@string/action_help"
+        app:showAsAction="never"/>
 
-    <item
-        android:id="@+id/action_about"
-        android:orderInCategory="2"
-        app:showAsAction="ifRoom"
-        android:title="About"/>
 </menu>
 <!-- From: file:/C:/git_repositories/OneClickCall_AS/app/src/main/res/menu/main.xml -->

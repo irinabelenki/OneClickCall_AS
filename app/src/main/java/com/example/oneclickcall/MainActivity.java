@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -31,7 +32,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-public class MainActivity extends Activity implements
+public class MainActivity extends ActionBarActivity implements
         AdapterView.OnItemClickListener {
 
     public static final String TAG = "MainActivity";
@@ -63,7 +64,7 @@ public class MainActivity extends Activity implements
                 SharedPreferences prefs = getSharedPreferences(ONE_CLICK_CALL_PREFS, MODE_PRIVATE);
                 boolean doNotShowDialog = prefs.getBoolean(DO_NOT_SHOW_DIALOG, false);
                 if (!doNotShowDialog) {
-                    showHelpDialog();
+                    showHelpDialog(true);
                 } else {
                     pickContact();
                 }
@@ -79,7 +80,7 @@ public class MainActivity extends Activity implements
         registerForContextMenu(listView);
     }
 
-    private void showHelpDialog() {
+    private void showHelpDialog(boolean withAction) {
         View checkBoxView = View.inflate(this, R.layout.help_dialog, null);
         CheckBox checkBox = (CheckBox) checkBoxView.findViewById(R.id.do_not_show_checkbox);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -91,23 +92,32 @@ public class MainActivity extends Activity implements
             }
         });
         checkBox.setText(R.string.do_not_show_again);
+        checkBox.setChecked(getSharedPreferences(ONE_CLICK_CALL_PREFS, MODE_PRIVATE).getBoolean(DO_NOT_SHOW_DIALOG, false));
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.help);
-        builder.setMessage(R.string.help_message)
-                .setView(checkBoxView)
-                .setCancelable(false)
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                })
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        pickContact();
-                    }
-                })
-                .show();
+        builder.setMessage(R.string.help_message);
+        builder.setView(checkBoxView);
+        builder.setCancelable(false);
+        if(withAction) {
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    pickContact();
+                }
+            });
+        } else {
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+        }
+        builder.show();
     }
 
     @Override
@@ -123,8 +133,8 @@ public class MainActivity extends Activity implements
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_help) {
+            showHelpDialog(false);
         }
         return super.onOptionsItemSelected(item);
     }
