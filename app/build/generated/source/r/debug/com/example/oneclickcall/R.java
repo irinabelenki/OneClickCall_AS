@@ -1310,7 +1310,8 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f0b001f;
         public static final int action_bar_title=0x7f0b001e;
         public static final int action_context_bar=0x7f0b0032;
-        public static final int action_help=0x7f0b0052;
+        public static final int action_done=0x7f0b0054;
+        public static final int action_help=0x7f0b0050;
         public static final int action_menu_divider=0x7f0b0002;
         public static final int action_menu_presenter=0x7f0b0003;
         public static final int action_mode_bar=0x7f0b002e;
@@ -1323,7 +1324,6 @@ containing a value of this type.
         public static final int call_app_image=0x7f0b0041;
         public static final int call_app_name=0x7f0b0042;
         public static final int call_application=0x7f0b004c;
-        public static final int cancel=0x7f0b004e;
         public static final int checkbox=0x7f0b0029;
         public static final int collapseActionView=0x7f0b0017;
         public static final int contactName=0x7f0b0045;
@@ -1331,12 +1331,12 @@ containing a value of this type.
         public static final int contact_name_header=0x7f0b0044;
         public static final int decor_content_parent=0x7f0b002f;
         public static final int default_activity_button=0x7f0b0024;
-        public static final int delete=0x7f0b0055;
+        public static final int delete=0x7f0b0053;
         public static final int dialog=0x7f0b001b;
         public static final int disableHome=0x7f0b000c;
         public static final int do_not_show_checkbox=0x7f0b0047;
         public static final int dropdown=0x7f0b001c;
-        public static final int edit=0x7f0b0054;
+        public static final int edit=0x7f0b0052;
         public static final int edit_call_application=0x7f0b004b;
         public static final int edit_phone_number=0x7f0b0049;
         public static final int edit_query=0x7f0b0033;
@@ -1356,13 +1356,12 @@ containing a value of this type.
         public static final int never=0x7f0b0019;
         public static final int none=0x7f0b000e;
         public static final int normal=0x7f0b000a;
-        public static final int ok=0x7f0b004d;
         public static final int phoneNumber=0x7f0b0046;
         public static final int phone_number=0x7f0b004a;
         public static final int progress_circular=0x7f0b0005;
         public static final int progress_horizontal=0x7f0b0006;
         public static final int radio=0x7f0b002b;
-        public static final int recreate=0x7f0b0053;
+        public static final int recreate=0x7f0b0051;
         public static final int search_badge=0x7f0b0035;
         public static final int search_bar=0x7f0b0034;
         public static final int search_button=0x7f0b0036;
@@ -1374,9 +1373,9 @@ containing a value of this type.
         public static final int search_src_text=0x7f0b003a;
         public static final int search_voice_btn=0x7f0b003e;
         public static final int shortcut=0x7f0b002a;
-        public static final int shortcut_application=0x7f0b0050;
-        public static final int shortcut_name=0x7f0b004f;
-        public static final int shortcut_phone=0x7f0b0051;
+        public static final int shortcut_application=0x7f0b004e;
+        public static final int shortcut_name=0x7f0b004d;
+        public static final int shortcut_phone=0x7f0b004f;
         public static final int showCustom=0x7f0b000f;
         public static final int showHome=0x7f0b0010;
         public static final int showTitle=0x7f0b0011;
@@ -1430,6 +1429,7 @@ containing a value of this type.
     public static final class menu {
         public static final int main=0x7f0c0000;
         public static final int menu_list=0x7f0c0001;
+        public static final int shortcut=0x7f0c0002;
     }
     public static final class string {
         public static final int abc_action_bar_home_description=0x7f050000;
@@ -1448,20 +1448,21 @@ containing a value of this type.
         public static final int abc_shareactionprovider_share_with=0x7f05000d;
         public static final int abc_shareactionprovider_share_with_application=0x7f05000e;
         public static final int abc_toolbar_collapse_description=0x7f05000f;
-        public static final int action_help=0x7f050010;
-        public static final int action_settings=0x7f050011;
-        public static final int app_name=0x7f050012;
-        public static final int cancel=0x7f050013;
-        public static final int do_not_show_again=0x7f050014;
-        public static final int hello_world=0x7f050015;
-        public static final int help=0x7f050016;
-        public static final int help_message=0x7f050017;
-        public static final int menu_delete=0x7f050018;
-        public static final int menu_edit=0x7f050019;
-        public static final int menu_recreate=0x7f05001a;
-        public static final int ok=0x7f05001b;
-        public static final int pick_contact=0x7f05001c;
-        public static final int shortcuts=0x7f05001d;
+        public static final int action_done=0x7f050010;
+        public static final int action_help=0x7f050011;
+        public static final int action_settings=0x7f050012;
+        public static final int app_name=0x7f050013;
+        public static final int cancel=0x7f050014;
+        public static final int do_not_show_again=0x7f050015;
+        public static final int hello_world=0x7f050016;
+        public static final int help=0x7f050017;
+        public static final int help_message=0x7f050018;
+        public static final int menu_delete=0x7f050019;
+        public static final int menu_edit=0x7f05001a;
+        public static final int menu_recreate=0x7f05001b;
+        public static final int ok=0x7f05001c;
+        public static final int pick_contact=0x7f05001d;
+        public static final int shortcuts=0x7f05001e;
     }
     public static final class style {
         /**  API 11 theme customizations can go here. 

@@ -14,7 +14,10 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
@@ -24,7 +27,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShortcutActivity extends Activity implements
+public class ShortcutActivity extends ActionBarActivity implements
         LoaderManager.LoaderCallbacks<Cursor>  {
 
     TextView contactNameTextView;
@@ -32,8 +35,6 @@ public class ShortcutActivity extends Activity implements
     TextView callApplicationTextView;
     Button editPhoneNumberButton;
     Button editCallApplicationButton;
-    Button okButton;
-    Button cancelButton;
 
     private enum ACTION { CREATE, EDIT, ILLEGAL };
     private ACTION action = ACTION.ILLEGAL;
@@ -75,62 +76,6 @@ public class ShortcutActivity extends Activity implements
             @Override
             public void onClick(View v) {
                 showCallApplications();
-            }
-        });
-
-        okButton = (Button) findViewById(R.id.ok);
-        okButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                switch(action) {
-                    case CREATE:
-                        if(selectedShortcutItem.isFilled()) {
-                            ShortcutEditor.addShortcut(ShortcutActivity.this,
-                                    selectedShortcutItem.getName(),
-                                    selectedShortcutItem.getPhone(),
-                                    selectedShortcutItem.getPackageName(),
-                                    selectedShortcutItem.getClassName());
-                            db.createShortcut(selectedShortcutItem);
-                        } else {
-                            Log.e(MainActivity.TAG, "Fill it!");
-                            Toast.makeText(ShortcutActivity.this, "Fill all shortcut fields", Toast.LENGTH_SHORT).show();
-                            //TODO not finish
-                        }
-                        break;
-                    case EDIT:
-                        ShortcutEditor.removeShortcut(ShortcutActivity.this,
-                                oldShortcutItem.getName(),
-                                oldShortcutItem.getPhone(),
-                                oldShortcutItem.getPackageName(),
-                                oldShortcutItem.getClassName());
-                        ShortcutEditor.addShortcut(ShortcutActivity.this,
-                                selectedShortcutItem.getName(),
-                                selectedShortcutItem.getPhone(),
-                                selectedShortcutItem.getPackageName(),
-                                selectedShortcutItem.getClassName());
-                        db.updateShortcut(selectedShortcutItem);
-                        break;
-                    case ILLEGAL:
-                        Log.e(MainActivity.TAG, "Illegal action");
-                        break;
-                }
-                Intent returnIntent = new Intent();
-                setResult(RESULT_OK, returnIntent);
-                Log.w(MainActivity.TAG, "ShortcutActivity finished with OK");
-                finish();
-            }
-        });
-
-        cancelButton = (Button) findViewById(R.id.cancel);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent returnIntent = new Intent();
-                setResult(RESULT_CANCELED, returnIntent);
-                Log.w(MainActivity.TAG, "ShortcutActivity finished with CANCEL");
-                finish();
             }
         });
 
@@ -219,8 +164,8 @@ public class ShortcutActivity extends Activity implements
 
     private void showCallApplications() {
         final PackageManager packageManager = getPackageManager();
-        //Intent callIntent = new Intent(Intent.ACTION_CALL, null);
-        Intent callIntent = new Intent("android.intent.action.CALL_PRIVILEGED", null);
+        Intent callIntent = new Intent(Intent.ACTION_CALL, null);
+        //Intent callIntent = new Intent("android.intent.action.CALL_PRIVILEGED", null);
         callIntent.setData(Uri.parse("tel:" + "1234567890"));
         final List<ResolveInfo> resolveInfos = packageManager.queryIntentActivities(callIntent, 0);
 
@@ -275,4 +220,59 @@ public class ShortcutActivity extends Activity implements
             builder.show();
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.shortcut, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_done) {
+            switch(action) {
+                case CREATE:
+                    if(selectedShortcutItem.isFilled()) {
+                        ShortcutEditor.addShortcut(ShortcutActivity.this,
+                                selectedShortcutItem.getName(),
+                                selectedShortcutItem.getPhone(),
+                                selectedShortcutItem.getPackageName(),
+                                selectedShortcutItem.getClassName());
+                        db.createShortcut(selectedShortcutItem);
+                    } else {
+                        Log.e(MainActivity.TAG, "Fill it!");
+                        Toast.makeText(ShortcutActivity.this, "Fill all shortcut fields", Toast.LENGTH_SHORT).show();
+                        //TODO not finish
+                    }
+                    break;
+                case EDIT:
+                    ShortcutEditor.removeShortcut(ShortcutActivity.this,
+                            oldShortcutItem.getName(),
+                            oldShortcutItem.getPhone(),
+                            oldShortcutItem.getPackageName(),
+                            oldShortcutItem.getClassName());
+                    ShortcutEditor.addShortcut(ShortcutActivity.this,
+                            selectedShortcutItem.getName(),
+                            selectedShortcutItem.getPhone(),
+                            selectedShortcutItem.getPackageName(),
+                            selectedShortcutItem.getClassName());
+                    db.updateShortcut(selectedShortcutItem);
+                    break;
+                case ILLEGAL:
+                    Log.e(MainActivity.TAG, "Illegal action");
+                    break;
+            }
+            Intent returnIntent = new Intent();
+            setResult(RESULT_OK, returnIntent);
+            Log.w(MainActivity.TAG, "ShortcutActivity finished with OK");
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
