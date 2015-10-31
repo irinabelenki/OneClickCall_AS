@@ -1,6 +1,5 @@
 package com.example.oneclickcall;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
@@ -20,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,19 +32,21 @@ public class ShortcutActivity extends ActionBarActivity implements
 
     TextView contactNameTextView;
     TextView phoneNumberTextView;
-    TextView callApplicationTextView;
+    //TextView callApplicationTextView;
+    ImageView callApplicationIcon;
     Button editPhoneNumberButton;
-    Button editCallApplicationButton;
+    Button callApplicationButton;
 
-    private enum ACTION { CREATE, EDIT, ILLEGAL };
+    private enum ACTION { CREATE, EDIT, ILLEGAL }
     private ACTION action = ACTION.ILLEGAL;
 
     ShortcutDBHelper db = new ShortcutDBHelper(this);
     private ArrayList<CallAppItem> appsList;
 
     static final String[] PROJECTION = new String[]{
-            ContactsContract.CommonDataKinds.Phone._ID,
-            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+            ContactsContract.Contacts._ID,
+            ContactsContract.Contacts.DISPLAY_NAME,
+            //ContactsContract.Contacts.PHOTO_ID,
             ContactsContract.CommonDataKinds.Phone.NUMBER,
     };
 
@@ -61,7 +63,7 @@ public class ShortcutActivity extends ActionBarActivity implements
 
         contactNameTextView = (TextView) findViewById(R.id.contact_name);
         phoneNumberTextView = (TextView) findViewById(R.id.phone_number);
-        callApplicationTextView = (TextView) findViewById(R.id.call_application);
+        //callApplicationTextView = (TextView) findViewById(R.id.call_application);
         editPhoneNumberButton = (Button) findViewById(R.id.edit_phone_number);
         editPhoneNumberButton.setOnClickListener(new View.OnClickListener() {
 
@@ -70,14 +72,15 @@ public class ShortcutActivity extends ActionBarActivity implements
                 showContactPhoneNumbers();
             }
         });
-        editCallApplicationButton = (Button) findViewById(R.id.edit_call_application);
-        editCallApplicationButton.setOnClickListener(new View.OnClickListener() {
+        callApplicationButton = (Button) findViewById(R.id.call_application);
+        callApplicationButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 showCallApplications();
             }
         });
+        callApplicationIcon = (ImageView)findViewById(R.id.call_application_icon);
 
         contactId = getIntent().getStringExtra(MainActivity.CONTACT_ID);
         Log.v(MainActivity.TAG, "contactId: " + contactId);
@@ -92,7 +95,9 @@ public class ShortcutActivity extends ActionBarActivity implements
                 action = ACTION.EDIT;
                 contactNameTextView.setText(selectedShortcutItem.getName());
                 phoneNumberTextView.setText(selectedShortcutItem.getPhone());
-                callApplicationTextView.setText(selectedShortcutItem.getApplication());
+                //callApplicationTextView.setText(selectedShortcutItem.getApplication());
+                callApplicationButton.setText(selectedShortcutItem.getApplication());
+                callApplicationIcon.setImageDrawable(selectedShortcutItem.getApplicationIcon());
                 contactId = selectedShortcutItem.getContactId();
                 oldShortcutItem = new ShortcutItem(selectedShortcutItem);
             }
@@ -101,10 +106,13 @@ public class ShortcutActivity extends ActionBarActivity implements
 
     private void showContactPhoneNumbers() {
         String[] fromColumns = {
-                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                ContactsContract.Contacts.DISPLAY_NAME,
+                //ContactsContract.Contacts.PHOTO_ID,
                 ContactsContract.CommonDataKinds.Phone.NUMBER,};
 
-        int[] toViews = {R.id.contactName, R.id.phoneNumber,};
+        int[] toViews = {R.id.contactName,
+                         //R.id.photo,
+                         R.id.phoneNumber,};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(R.drawable.ic_launcher);
@@ -187,8 +195,11 @@ public class ShortcutActivity extends ActionBarActivity implements
             ResolveInfo info = resolveInfos.get(0);
             Drawable icon = packageManager.getApplicationIcon(info.activityInfo.applicationInfo);
             String label = packageManager.getApplicationLabel(info.activityInfo.applicationInfo).toString();
-            callApplicationTextView.setText(label);
+            //callApplicationTextView.setText(label);
+            callApplicationButton.setText(label);
+            callApplicationIcon.setImageDrawable(icon);
             selectedShortcutItem.setApplication(label);
+            selectedShortcutItem.setApplicationIcon(icon);
             selectedShortcutItem.setPackageName(info.activityInfo.packageName);
             selectedShortcutItem.setClassName(info.activityInfo.name);
         } else {
@@ -210,8 +221,10 @@ public class ShortcutActivity extends ActionBarActivity implements
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             CallAppItem callAppItem = callAppAdapter.getItem(which);
-                            callApplicationTextView.setText(callAppItem.getName());
+                            //callApplicationTextView.setText(callAppItem.getName());
+                            callApplicationButton.setText(callAppItem.getName());
                             selectedShortcutItem.setApplication(callAppItem.getName());
+                            selectedShortcutItem.setApplicationIcon(callAppItem.getImage());
                             selectedShortcutItem.setPackageName(callAppItem.getPackageName());
                             selectedShortcutItem.setClassName(callAppItem.getClassName());
                             dialog.dismiss();

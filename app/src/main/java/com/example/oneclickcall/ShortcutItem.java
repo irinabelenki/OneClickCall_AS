@@ -2,6 +2,7 @@ package com.example.oneclickcall;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -9,6 +10,7 @@ public class ShortcutItem implements Parcelable {
     private int id;
     private String name;
     private String application;
+    private Drawable applicationIcon;
     private String phone;
     private String packageName;
     private String className;
@@ -18,24 +20,29 @@ public class ShortcutItem implements Parcelable {
         this.id = -1;
     }
 
-    public ShortcutItem(int id, String name, String application,
+    public ShortcutItem(int id, String name,
+                        String application, Drawable applicationIcon,
                         String phone,
                         String packageName, String className, String contactId) {
         super();
         this.id = id;
         this.name = name;
         this.application = application;
+        this.applicationIcon = applicationIcon;
         this.phone = phone;
         this.packageName = packageName;
         this.className = className;
         this.contactId = contactId;
     }
 
-    public ShortcutItem(String name, String application, String phone,
+    public ShortcutItem(String name,
+                        String application, Drawable applicationIcon,
+                        String phone,
                         String packageName, String className, String contactId) {
         super();
         this.name = name;
         this.application = application;
+        this.applicationIcon = applicationIcon;
         this.phone = phone;
         this.packageName = packageName;
         this.className = className;
@@ -46,6 +53,7 @@ public class ShortcutItem implements Parcelable {
         id = other.getId();
         name = other.getName();
         application = other.getApplication();
+        applicationIcon = other.getApplicationIcon();
         phone = other.getPhone();
         packageName = other.getPackageName();
         className = other.getClassName();
@@ -56,6 +64,10 @@ public class ShortcutItem implements Parcelable {
         id = in.readInt();
         name = in.readString();
         application = in.readString();
+
+        Bitmap bitmap = (Bitmap)in.readParcelable(getClass().getClassLoader());
+        applicationIcon = new BitmapDrawable(bitmap);
+
         phone = in.readString();
         packageName = in.readString();
         className = in.readString();
@@ -85,6 +97,14 @@ public class ShortcutItem implements Parcelable {
 
     public void setApplication(String application) {
         this.application = application;
+    }
+
+    public Drawable getApplicationIcon() {
+        return applicationIcon;
+    }
+
+    public void setApplicationIcon(Drawable applicationIcon) {
+        this.applicationIcon = applicationIcon;
     }
 
     public String getPhone() {
@@ -137,6 +157,10 @@ public class ShortcutItem implements Parcelable {
         dest.writeInt(id);
         dest.writeString(name);
         dest.writeString(application);
+
+        Bitmap bitmap = (Bitmap)((BitmapDrawable) applicationIcon).getBitmap();
+        dest.writeParcelable(bitmap, flags);
+
         dest.writeString(phone);
         dest.writeString(packageName);
         dest.writeString(className);

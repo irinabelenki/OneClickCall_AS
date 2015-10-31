@@ -126,6 +126,7 @@ public class ContactActivity extends ListActivity implements
                     info.activityInfo.name);
             db.createShortcut(new ShortcutItem(contactNameTextView.getText().toString(),
                     packageManager.getApplicationLabel(info.activityInfo.applicationInfo).toString(),
+                    packageManager.getApplicationIcon(info.activityInfo.applicationInfo),
                     phoneNumberTextView.getText().toString(),
                     info.activityInfo.packageName,
                     info.activityInfo.name, ""));
@@ -154,6 +155,7 @@ public class ContactActivity extends ListActivity implements
                                 item.getClassName());
                         db.createShortcut(new ShortcutItem(contactNameTextView.getText().toString(),
                                 item.getName(),
+                                item.getImage(),
                                 phoneNumberTextView.getText().toString(),
                                 item.getPackageName(),
                                 item.getClassName(), ""));

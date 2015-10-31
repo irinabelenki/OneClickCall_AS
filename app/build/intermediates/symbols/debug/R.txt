@@ -355,7 +355,8 @@ int id beginning 0x7f0b0013
 int id buttonCreateShortcut 0x7f0b0040
 int id call_app_image 0x7f0b0041
 int id call_app_name 0x7f0b0042
-int id call_application 0x7f0b004c
+int id call_application 0x7f0b004b
+int id call_application_icon 0x7f0b004c
 int id checkbox 0x7f0b0029
 int id collapseActionView 0x7f0b0017
 int id contactName 0x7f0b0045
@@ -369,7 +370,6 @@ int id disableHome 0x7f0b000c
 int id do_not_show_checkbox 0x7f0b0047
 int id dropdown 0x7f0b001c
 int id edit 0x7f0b0052
-int id edit_call_application 0x7f0b004b
 int id edit_phone_number 0x7f0b0049
 int id edit_query 0x7f0b0033
 int id end 0x7f0b0014

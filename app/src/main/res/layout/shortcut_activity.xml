@@ -31,18 +31,23 @@
         android:textSize="30sp" />
 
     <Button
-        android:id="@+id/edit_call_application"
+        android:id="@+id/call_application"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Edit call application" />
 
-    <TextView
+    <ImageView
+        android:id="@+id/call_application_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!--TextView
         android:id="@+id/call_application"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:text="No call application"
         android:textColor="#000"
-        android:textSize="30sp" />
+        android:textSize="30sp" /-->
 
 </LinearLayout>

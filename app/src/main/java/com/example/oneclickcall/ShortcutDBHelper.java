@@ -1,5 +1,6 @@
 package com.example.oneclickcall;
 
+import java.io.ByteArrayOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,6 +9,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 public class ShortcutDBHelper extends SQLiteOpenHelper {
@@ -17,13 +22,15 @@ public class ShortcutDBHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_APPLICATION = "application";
+    private static final String COLUMN_APPLICATION_ICON = "application_icon";
     private static final String COLUMN_PHONE = "phone";
     private static final String COLUMN_PACKAGE_NAME = "package_name";
     private static final String COLUMN_CLASS_NAME = "class_name";
     private static final String COLUMN_CONTACT_ID = "contact_id";
 
     private static final String[] COLUMNS = {COLUMN_ID, COLUMN_NAME,
-            COLUMN_APPLICATION, COLUMN_PHONE, COLUMN_PACKAGE_NAME, COLUMN_CLASS_NAME, COLUMN_CONTACT_ID};
+            COLUMN_APPLICATION, COLUMN_APPLICATION_ICON,
+            COLUMN_PHONE, COLUMN_PACKAGE_NAME, COLUMN_CLASS_NAME, COLUMN_CONTACT_ID};
 
     public ShortcutDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -35,6 +42,7 @@ public class ShortcutDBHelper extends SQLiteOpenHelper {
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_NAME + " TEXT, "
                 + COLUMN_APPLICATION + " TEXT, "
+                + COLUMN_APPLICATION_ICON + " BLOB, "
                 + COLUMN_PHONE + " TEXT, "
                 + COLUMN_PACKAGE_NAME + " TEXT, "
                 + COLUMN_CLASS_NAME + " TEXT, "
@@ -53,6 +61,7 @@ public class ShortcutDBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, item.getName());
         values.put(COLUMN_APPLICATION, item.getApplication());
+        values.put(COLUMN_APPLICATION_ICON, drawableToByteArray(item.getApplicationIcon()));
         values.put(COLUMN_PHONE, item.getPhone());
         values.put(COLUMN_PACKAGE_NAME, item.getPackageName());
         values.put(COLUMN_CLASS_NAME, item.getClassName());
@@ -75,10 +84,11 @@ public class ShortcutDBHelper extends SQLiteOpenHelper {
                     Integer.parseInt(cursor.getString(0)),
                     cursor.getString(1),
                     cursor.getString(2),
-                    cursor.getString(3),
+                    byteArrayToDrawable(cursor.getBlob(3)),
                     cursor.getString(4),
                     cursor.getString(5),
-                    cursor.getString(6));
+                    cursor.getString(6),
+                    cursor.getString(7));
             Log.v(MainActivity.TAG, "GET:" + item.toString());
         }
         return item;
@@ -97,10 +107,11 @@ public class ShortcutDBHelper extends SQLiteOpenHelper {
                 item.setId(Integer.parseInt(cursor.getString(0)));
                 item.setName(cursor.getString(1));
                 item.setApplication(cursor.getString(2));
-                item.setPhone(cursor.getString(3));
-                item.setPackageName(cursor.getString(4));
-                item.setClassName(cursor.getString(5));
-                item.setContactId(cursor.getString(6));
+                item.setApplicationIcon(byteArrayToDrawable(cursor.getBlob(3)));
+                item.setPhone(cursor.getString(4));
+                item.setPackageName(cursor.getString(5));
+                item.setClassName(cursor.getString(6));
+                item.setContactId(cursor.getString(7));
                 items.add(item);
                 Log.v(MainActivity.TAG, "GET ALL:" + item.toString());
             } while (cursor.moveToNext());
@@ -113,6 +124,7 @@ public class ShortcutDBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, item.getName());
         values.put(COLUMN_APPLICATION, item.getApplication());
+        values.put(COLUMN_APPLICATION_ICON, item.getApplication());
         values.put(COLUMN_PHONE, item.getPhone());
         values.put(COLUMN_PACKAGE_NAME, item.getPackageName());
         values.put(COLUMN_CLASS_NAME, item.getClassName());
@@ -130,5 +142,20 @@ public class ShortcutDBHelper extends SQLiteOpenHelper {
         db.delete(TABLE_NAME, COLUMN_ID + " = ?",
                 new String[]{String.valueOf(id)});
         db.close();
+    }
+
+    private byte[] drawableToByteArray(Drawable drawable) {
+        BitmapDrawable bitDw = ((BitmapDrawable) drawable);
+        Bitmap bitmap = bitDw.getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        return stream.toByteArray();
+    }
+
+    private Drawable byteArrayToDrawable(byte[] byteArray) {
+        Bitmap bitMapImage = BitmapFactory.decodeByteArray(
+                byteArray, 0,
+                byteArray.length);
+        return new BitmapDrawable(bitMapImage);
     }
 }

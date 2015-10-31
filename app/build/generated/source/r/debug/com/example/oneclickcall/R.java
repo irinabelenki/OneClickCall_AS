@@ -1323,7 +1323,8 @@ containing a value of this type.
         public static final int buttonCreateShortcut=0x7f0b0040;
         public static final int call_app_image=0x7f0b0041;
         public static final int call_app_name=0x7f0b0042;
-        public static final int call_application=0x7f0b004c;
+        public static final int call_application=0x7f0b004b;
+        public static final int call_application_icon=0x7f0b004c;
         public static final int checkbox=0x7f0b0029;
         public static final int collapseActionView=0x7f0b0017;
         public static final int contactName=0x7f0b0045;
@@ -1337,7 +1338,6 @@ containing a value of this type.
         public static final int do_not_show_checkbox=0x7f0b0047;
         public static final int dropdown=0x7f0b001c;
         public static final int edit=0x7f0b0052;
-        public static final int edit_call_application=0x7f0b004b;
         public static final int edit_phone_number=0x7f0b0049;
         public static final int edit_query=0x7f0b0033;
         public static final int end=0x7f0b0014;
