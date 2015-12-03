@@ -1,0 +1,74 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".LinearLayout">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        tools:context=".LinearLayout">
+
+        <TextView
+            android:id="@+id/contact_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="Name"
+            android:textColor="#000"
+            android:textSize="30sp" />
+
+        <ImageView
+            android:id="@+id/contact_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/phone_number_listview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:choiceMode="singleChoice" />
+
+    <!--LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        tools:context=".LinearLayout">
+
+        <Button
+            android:id="@+id/call_application"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Call application" />
+
+        <ImageView
+            android:id="@+id/call_application_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout-->
+
+    <Spinner
+        android:id="@+id/call_application_spinner"
+        android:drawSelectorOnTop="true"
+        android:prompt="@string/spinner_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!--TextView
+        android:id="@+id/call_application"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="No call application"
+        android:textColor="#000"
+        android:textSize="30sp" /-->
+
+</LinearLayout><!-- From: file:/C:/git_repositories/OneClickCall_AS/app/src/main/res/layout/shortcut_activity.xml -->

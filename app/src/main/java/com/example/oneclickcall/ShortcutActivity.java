@@ -1,14 +1,14 @@
 package com.example.oneclickcall;
 
-import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,43 +18,54 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ShortcutActivity extends ActionBarActivity implements
         LoaderManager.LoaderCallbacks<Cursor>  {
 
-    TextView contactNameTextView;
-    TextView phoneNumberTextView;
-    //TextView callApplicationTextView;
-    ImageView callApplicationIcon;
-    Button editPhoneNumberButton;
-    Button callApplicationButton;
+    private TextView contactNameTextView;
+    private ImageView contactPhotoImageView;
+    private SimpleCursorAdapter adapter;
+    private ListView listView;
+    private Spinner callApplicationSpinner;
+    private CallApplicationAdapter callApplicationAdapter;
 
     private enum ACTION { CREATE, EDIT, ILLEGAL }
     private ACTION action = ACTION.ILLEGAL;
 
     ShortcutDBHelper db = new ShortcutDBHelper(this);
-    private ArrayList<CallAppItem> appsList;
+    private ArrayList<CallAppItem> appsList = new ArrayList<CallAppItem>();
 
     static final String[] PROJECTION = new String[]{
             ContactsContract.Contacts._ID,
             ContactsContract.Contacts.DISPLAY_NAME,
-            //ContactsContract.Contacts.PHOTO_ID,
+            ContactsContract.Contacts.PHOTO_ID,
             ContactsContract.CommonDataKinds.Phone.NUMBER,
     };
+
+    static final String[] fromColumns = {
+            ContactsContract.Contacts.DISPLAY_NAME,
+            ContactsContract.Contacts.PHOTO_ID,
+            ContactsContract.CommonDataKinds.Phone.NUMBER,};
+
+    static final int[] toViews = {R.id.contact_name,
+            R.id.photo,
+            R.id.phone_number,};
 
     private String contactId;
     private ShortcutItem selectedShortcutItem;
     private ShortcutItem oldShortcutItem;
-    private View titleView;
-    private SimpleCursorAdapter adapter;
+    private String selectedPhone = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,25 +73,38 @@ public class ShortcutActivity extends ActionBarActivity implements
         setContentView(R.layout.shortcut_activity);
 
         contactNameTextView = (TextView) findViewById(R.id.contact_name);
-        phoneNumberTextView = (TextView) findViewById(R.id.phone_number);
-        //callApplicationTextView = (TextView) findViewById(R.id.call_application);
-        editPhoneNumberButton = (Button) findViewById(R.id.edit_phone_number);
-        editPhoneNumberButton.setOnClickListener(new View.OnClickListener() {
+        contactPhotoImageView = (ImageView)findViewById(R.id.contact_photo);
 
-            @Override
-            public void onClick(View v) {
-                showContactPhoneNumbers();
+        listView = (ListView)findViewById(R.id.phone_number_listview);
+        adapter = new SimpleCursorAdapter(this, R.layout.contacts_list_item,
+                null, fromColumns, toViews, 0);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+                if (cursor.moveToPosition(position)) {
+                    selectedPhone = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    Log.i(MainActivity.TAG, "Clicked on " + selectedPhone);
+                }
             }
         });
-        callApplicationButton = (Button) findViewById(R.id.call_application);
-        callApplicationButton.setOnClickListener(new View.OnClickListener() {
+
+        callApplicationSpinner = (Spinner)findViewById(R.id.call_application_spinner);
+        setCallApplicationData();
+        callApplicationAdapter = new CallApplicationAdapter(this, R.layout.call_app_spinner_rows, appsList);
+        callApplicationSpinner.setAdapter(callApplicationAdapter);
+
+        callApplicationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View v, int position, long id) {
+                String appName = ((TextView)v.findViewById(R.id.call_app_name)).getText().toString();
+            }
 
             @Override
-            public void onClick(View v) {
-                showCallApplications();
+            public void onNothingSelected(AdapterView<?> parentView) {
+
             }
         });
-        callApplicationIcon = (ImageView)findViewById(R.id.call_application_icon);
 
         contactId = getIntent().getStringExtra(MainActivity.CONTACT_ID);
         Log.v(MainActivity.TAG, "contactId: " + contactId);
@@ -88,65 +112,77 @@ public class ShortcutActivity extends ActionBarActivity implements
             action = ACTION.CREATE;
             selectedShortcutItem = new ShortcutItem();
             selectedShortcutItem.setContactId(contactId);
+            listView.setItemChecked(0, true);//TODO - fix it!
         }
         else {
             selectedShortcutItem = getIntent().getExtras().getParcelable(MainActivity.SHORTCUT_ITEM);
             if (selectedShortcutItem != null) {
                 action = ACTION.EDIT;
                 contactNameTextView.setText(selectedShortcutItem.getName());
-                phoneNumberTextView.setText(selectedShortcutItem.getPhone());
-                //callApplicationTextView.setText(selectedShortcutItem.getApplication());
-                callApplicationButton.setText(selectedShortcutItem.getApplication());
-                callApplicationIcon.setImageDrawable(selectedShortcutItem.getApplicationIcon());
+                int position = callApplicationAdapter.getPosition(new CallAppItem(selectedShortcutItem.getApplication(),
+                        selectedShortcutItem.getApplicationIcon(),
+                        selectedShortcutItem.getPackageName(),
+                        selectedShortcutItem.getClassName()  ));
+                Log.i(MainActivity.TAG, "position:" + position);
+                callApplicationSpinner.setSelection(position);
                 contactId = selectedShortcutItem.getContactId();
+                listView.setItemChecked(0, true);//TODO - fix it!
                 oldShortcutItem = new ShortcutItem(selectedShortcutItem);
+            }
+        }
+
+        getLoaderManager().initLoader(0, null, this);
+    }
+
+    private void setCallApplicationData() {
+        final PackageManager packageManager = getPackageManager();
+        Intent callIntent = new Intent(Intent.ACTION_CALL, null);
+        //Intent callIntent = new Intent("android.intent.action.CALL_PRIVILEGED", null);
+        callIntent.setData(Uri.parse("tel:" + "1234567890"));
+        final List<ResolveInfo> resolveInfos = packageManager.queryIntentActivities(callIntent, 0);
+        if (resolveInfos.size() == 0) {
+            Log.i(MainActivity.TAG, "No call application");
+            callApplicationSpinner.setPrompt("No call applications");
+        }
+        /*else if (resolveInfos.size() == 1) {
+            Log.i(MainActivity.TAG, "Only one call application");
+            ResolveInfo info = resolveInfos.get(0);
+            Drawable icon = packageManager.getApplicationIcon(info.activityInfo.applicationInfo);
+            String label = packageManager.getApplicationLabel(info.activityInfo.applicationInfo).toString();
+            appsList.add(new CallAppItem(label, icon, info.activityInfo.packageName, info.activityInfo.name));
+            //callApplicationTextView.setText(label);
+            //callApplicationButton.setText(label);
+            //callApplicationIcon.setImageDrawable(icon);
+            selectedShortcutItem.setApplication(label);
+            selectedShortcutItem.setApplicationIcon(icon);
+            selectedShortcutItem.setPackageName(info.activityInfo.packageName);
+            selectedShortcutItem.setClassName(info.activityInfo.name);
+        }*/ else {
+            Log.i(MainActivity.TAG, "Call apps list size: " + resolveInfos.size());
+
+            for (ResolveInfo info : resolveInfos) {
+                //ApplicationInfo appInfo = info.activityInfo.applicationInfo;
+                Drawable icon = packageManager.getApplicationIcon(info.activityInfo.applicationInfo);
+                String label = packageManager.getApplicationLabel(info.activityInfo.applicationInfo).toString();
+                Log.v(MainActivity.TAG, "Name: " + label);
+                appsList.add(new CallAppItem(label, icon, info.activityInfo.packageName, info.activityInfo.name));
             }
         }
     }
 
-    private void showContactPhoneNumbers() {
-        String[] fromColumns = {
-                ContactsContract.Contacts.DISPLAY_NAME,
-                //ContactsContract.Contacts.PHOTO_ID,
-                ContactsContract.CommonDataKinds.Phone.NUMBER,};
-
-        int[] toViews = {R.id.contactName,
-                         //R.id.photo,
-                         R.id.phoneNumber,};
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setIcon(R.drawable.ic_launcher);
-        titleView = getLayoutInflater().inflate(R.layout.contacts_header, null);
-        builder.setCustomTitle(titleView);
-        adapter = new SimpleCursorAdapter(this, R.layout.contacts_list_item,
-                null, fromColumns, toViews, 0);
-        getLoaderManager().initLoader(0, null, this);
-        builder.setNegativeButton("cancel",
-                new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        builder.setAdapter(adapter,
-                new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        setSelectedContactData(which);
-                        dialog.dismiss();
-                    }
-                });
-        builder.show();
-    }
-
     private void setSelectedContactData(int position) {
         Cursor cursor = (Cursor)adapter.getItem(position);
-        phoneNumberTextView.setText(cursor.getString(2));
         contactNameTextView.setText(cursor.getString(1));
+        int photoId = cursor.getInt(2);
+        Log.i(MainActivity.TAG, "photoId: " + photoId);
+        if(photoId > 0) {
+            Bitmap bitmap = queryContactImage(photoId);
+            contactPhotoImageView.setImageBitmap(bitmap);
+        }
+        //phoneNumberTextView.setText(cursor.getString(3));
+
         selectedShortcutItem.setName(cursor.getString(1));
-        selectedShortcutItem.setPhone(cursor.getString(2));
+        selectedShortcutItem.setPhone(cursor.getString(3));
     }
 
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -159,8 +195,13 @@ public class ShortcutActivity extends ActionBarActivity implements
 
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         data.moveToFirst();
-        TextView titleTextView = (TextView)titleView.findViewById(R.id.contact_name_header);
-        titleTextView.setText(data.getString(1));
+        contactNameTextView.setText(data.getString(1));
+        int photoId = data.getInt(2);
+        Log.i(MainActivity.TAG, "photoId: " + photoId);
+        if(photoId > 0) {
+            Bitmap bitmap = queryContactImage(photoId);
+            contactPhotoImageView.setImageBitmap(bitmap);
+        }
 
         adapter.swapCursor(data);
     }
@@ -169,87 +210,32 @@ public class ShortcutActivity extends ActionBarActivity implements
         adapter.swapCursor(null);
     }
 
-
-    private void showCallApplications() {
-        final PackageManager packageManager = getPackageManager();
-        Intent callIntent = new Intent(Intent.ACTION_CALL, null);
-        //Intent callIntent = new Intent("android.intent.action.CALL_PRIVILEGED", null);
-        callIntent.setData(Uri.parse("tel:" + "1234567890"));
-        final List<ResolveInfo> resolveInfos = packageManager.queryIntentActivities(callIntent, 0);
-
-        if (resolveInfos.size() == 0) {
-            Log.i(MainActivity.TAG, "No call application");
-        } else {
-            Log.i(MainActivity.TAG, "Call apps list size: " + resolveInfos.size());
-            appsList = new ArrayList<CallAppItem>();
-            for (ResolveInfo info : resolveInfos) {
-                //ApplicationInfo appInfo = info.activityInfo.applicationInfo;
-                Drawable icon = packageManager.getApplicationIcon(info.activityInfo.applicationInfo);
-                String label = packageManager.getApplicationLabel(info.activityInfo.applicationInfo).toString();
-                Log.v(MainActivity.TAG, "Name: " + label);
-                appsList.add(new CallAppItem(label, icon, info.activityInfo.packageName, info.activityInfo.name));
-            }
-        }
-        if (resolveInfos.size() == 1) {
-            Log.i(MainActivity.TAG, "Only one call application");
-            ResolveInfo info = resolveInfos.get(0);
-            Drawable icon = packageManager.getApplicationIcon(info.activityInfo.applicationInfo);
-            String label = packageManager.getApplicationLabel(info.activityInfo.applicationInfo).toString();
-            //callApplicationTextView.setText(label);
-            callApplicationButton.setText(label);
-            callApplicationIcon.setImageDrawable(icon);
-            selectedShortcutItem.setApplication(label);
-            selectedShortcutItem.setApplicationIcon(icon);
-            selectedShortcutItem.setPackageName(info.activityInfo.packageName);
-            selectedShortcutItem.setClassName(info.activityInfo.name);
-        } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setIcon(R.drawable.ic_launcher);
-            builder.setTitle("Call Apps");
-            final CallAppAdapter callAppAdapter = new CallAppAdapter(this, R.layout.call_app_list_item, appsList);
-            builder.setNegativeButton("cancel",
-                    new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            builder.setAdapter(callAppAdapter,
-                    new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            CallAppItem callAppItem = callAppAdapter.getItem(which);
-                            //callApplicationTextView.setText(callAppItem.getName());
-                            callApplicationButton.setText(callAppItem.getName());
-                            selectedShortcutItem.setApplication(callAppItem.getName());
-                            selectedShortcutItem.setApplicationIcon(callAppItem.getImage());
-                            selectedShortcutItem.setPackageName(callAppItem.getPackageName());
-                            selectedShortcutItem.setClassName(callAppItem.getClassName());
-                            dialog.dismiss();
-                        }
-                    });
-            builder.show();
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.shortcut, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        CallAppItem callAppItem;
+        Cursor cursor;
+        int position;
         if (id == R.id.action_done) {
             switch(action) {
                 case CREATE:
+                    callAppItem = (CallAppItem)callApplicationSpinner.getSelectedItem();
+                    selectedShortcutItem.setApplication(callAppItem.getName());
+                    selectedShortcutItem.setApplicationIcon(callAppItem.getImage());
+                    selectedShortcutItem.setPackageName(callAppItem.getPackageName());
+                    selectedShortcutItem.setClassName(callAppItem.getClassName());
+
+                    position = listView.getCheckedItemPosition();//TODO position should not be -1
+                    cursor = (Cursor)adapter.getItem(position);
+                    selectedShortcutItem.setName(cursor.getString(1));
+                    selectedShortcutItem.setPhone(cursor.getString(3));
+
                     if(selectedShortcutItem.isFilled()) {
                         ShortcutEditor.addShortcut(ShortcutActivity.this,
                                 selectedShortcutItem.getName(),
@@ -264,6 +250,16 @@ public class ShortcutActivity extends ActionBarActivity implements
                     }
                     break;
                 case EDIT:
+                    callAppItem = (CallAppItem)callApplicationSpinner.getSelectedItem();
+                    selectedShortcutItem.setApplication(callAppItem.getName());
+                    selectedShortcutItem.setApplicationIcon(callAppItem.getImage());
+                    selectedShortcutItem.setPackageName(callAppItem.getPackageName());
+                    selectedShortcutItem.setClassName(callAppItem.getClassName());
+
+                    position = listView.getCheckedItemPosition();//TODO position should not be -1
+                    cursor = (Cursor)adapter.getItem(position);
+                    selectedShortcutItem.setPhone(cursor.getString(3));
+
                     ShortcutEditor.removeShortcut(ShortcutActivity.this,
                             oldShortcutItem.getName(),
                             oldShortcutItem.getPhone(),
@@ -288,4 +284,24 @@ public class ShortcutActivity extends ActionBarActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+    private Bitmap queryContactImage(int imageDataRow) {
+        Cursor c = getContentResolver().query(ContactsContract.Data.CONTENT_URI, new String[]{
+                ContactsContract.CommonDataKinds.Photo.PHOTO
+        }, ContactsContract.Data._ID + "=?", new String[]{
+                Integer.toString(imageDataRow)
+        }, null);
+        byte[] imageBytes = null;
+        if (c != null) {
+            if (c.moveToFirst()) {
+                imageBytes = c.getBlob(0);
+            }
+            c.close();
+        }
+
+        if (imageBytes != null) {
+            return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        } else {
+            return null;
+        }
+    }
 }
