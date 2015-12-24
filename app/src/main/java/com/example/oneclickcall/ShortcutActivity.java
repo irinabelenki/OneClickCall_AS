@@ -13,7 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,9 +28,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class ShortcutActivity extends ActionBarActivity implements
+public class ShortcutActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>  {
 
     private TextView contactNameTextView;
@@ -97,7 +96,7 @@ public class ShortcutActivity extends ActionBarActivity implements
         callApplicationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View v, int position, long id) {
-                String appName = ((TextView)v.findViewById(R.id.call_app_name)).getText().toString();
+                //String appName = ((TextView)v.findViewById(R.id.call_app_name)).getText().toString();
             }
 
             @Override
@@ -112,21 +111,20 @@ public class ShortcutActivity extends ActionBarActivity implements
             action = ACTION.CREATE;
             selectedShortcutItem = new ShortcutItem();
             selectedShortcutItem.setContactId(contactId);
-            listView.setItemChecked(0, true);//TODO - fix it!
         }
         else {
             selectedShortcutItem = getIntent().getExtras().getParcelable(MainActivity.SHORTCUT_ITEM);
             if (selectedShortcutItem != null) {
                 action = ACTION.EDIT;
                 contactNameTextView.setText(selectedShortcutItem.getName());
-                int position = callApplicationAdapter.getPosition(new CallAppItem(selectedShortcutItem.getApplication(),
+                int appPosition = callApplicationAdapter.getPosition(new CallAppItem(selectedShortcutItem.getApplication(),
                         selectedShortcutItem.getApplicationIcon(),
                         selectedShortcutItem.getPackageName(),
                         selectedShortcutItem.getClassName()  ));
-                Log.i(MainActivity.TAG, "position:" + position);
-                callApplicationSpinner.setSelection(position);
+                Log.i(MainActivity.TAG, "appPosition:" + appPosition);
+                callApplicationSpinner.setSelection(appPosition);
                 contactId = selectedShortcutItem.getContactId();
-                listView.setItemChecked(0, true);//TODO - fix it!
+
                 oldShortcutItem = new ShortcutItem(selectedShortcutItem);
             }
         }
@@ -136,28 +134,15 @@ public class ShortcutActivity extends ActionBarActivity implements
 
     private void setCallApplicationData() {
         final PackageManager packageManager = getPackageManager();
-        Intent callIntent = new Intent(Intent.ACTION_CALL, null);
-        //Intent callIntent = new Intent("android.intent.action.CALL_PRIVILEGED", null);
+        //Intent callIntent = new Intent(Intent.ACTION_CALL, null);
+        Intent callIntent = new Intent("android.intent.action.CALL_PRIVILEGED", null);
         callIntent.setData(Uri.parse("tel:" + "1234567890"));
         final List<ResolveInfo> resolveInfos = packageManager.queryIntentActivities(callIntent, 0);
         if (resolveInfos.size() == 0) {
             Log.i(MainActivity.TAG, "No call application");
             callApplicationSpinner.setPrompt("No call applications");
         }
-        /*else if (resolveInfos.size() == 1) {
-            Log.i(MainActivity.TAG, "Only one call application");
-            ResolveInfo info = resolveInfos.get(0);
-            Drawable icon = packageManager.getApplicationIcon(info.activityInfo.applicationInfo);
-            String label = packageManager.getApplicationLabel(info.activityInfo.applicationInfo).toString();
-            appsList.add(new CallAppItem(label, icon, info.activityInfo.packageName, info.activityInfo.name));
-            //callApplicationTextView.setText(label);
-            //callApplicationButton.setText(label);
-            //callApplicationIcon.setImageDrawable(icon);
-            selectedShortcutItem.setApplication(label);
-            selectedShortcutItem.setApplicationIcon(icon);
-            selectedShortcutItem.setPackageName(info.activityInfo.packageName);
-            selectedShortcutItem.setClassName(info.activityInfo.name);
-        }*/ else {
+        else {
             Log.i(MainActivity.TAG, "Call apps list size: " + resolveInfos.size());
 
             for (ResolveInfo info : resolveInfos) {
@@ -168,21 +153,6 @@ public class ShortcutActivity extends ActionBarActivity implements
                 appsList.add(new CallAppItem(label, icon, info.activityInfo.packageName, info.activityInfo.name));
             }
         }
-    }
-
-    private void setSelectedContactData(int position) {
-        Cursor cursor = (Cursor)adapter.getItem(position);
-        contactNameTextView.setText(cursor.getString(1));
-        int photoId = cursor.getInt(2);
-        Log.i(MainActivity.TAG, "photoId: " + photoId);
-        if(photoId > 0) {
-            Bitmap bitmap = queryContactImage(photoId);
-            contactPhotoImageView.setImageBitmap(bitmap);
-        }
-        //phoneNumberTextView.setText(cursor.getString(3));
-
-        selectedShortcutItem.setName(cursor.getString(1));
-        selectedShortcutItem.setPhone(cursor.getString(3));
     }
 
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -204,6 +174,19 @@ public class ShortcutActivity extends ActionBarActivity implements
         }
 
         adapter.swapCursor(data);
+
+        switch (action) {
+            case CREATE:
+                listView.setItemChecked(0, true);
+                break;
+            case EDIT:
+                String phone = selectedShortcutItem.getPhone();
+                int phonePosition = getPhonePosition(phone);
+                listView.setItemChecked(phonePosition, true);
+                break;
+            case ILLEGAL:
+                Log.e(MainActivity.TAG, "Illegal action");
+        }
     }
 
     public void onLoaderReset(Loader<Cursor> loader) {
@@ -231,7 +214,7 @@ public class ShortcutActivity extends ActionBarActivity implements
                     selectedShortcutItem.setPackageName(callAppItem.getPackageName());
                     selectedShortcutItem.setClassName(callAppItem.getClassName());
 
-                    position = listView.getCheckedItemPosition();//TODO position should not be -1
+                    position = listView.getCheckedItemPosition();
                     cursor = (Cursor)adapter.getItem(position);
                     selectedShortcutItem.setName(cursor.getString(1));
                     selectedShortcutItem.setPhone(cursor.getString(3));
@@ -256,7 +239,7 @@ public class ShortcutActivity extends ActionBarActivity implements
                     selectedShortcutItem.setPackageName(callAppItem.getPackageName());
                     selectedShortcutItem.setClassName(callAppItem.getClassName());
 
-                    position = listView.getCheckedItemPosition();//TODO position should not be -1
+                    position = listView.getCheckedItemPosition();
                     cursor = (Cursor)adapter.getItem(position);
                     selectedShortcutItem.setPhone(cursor.getString(3));
 
@@ -303,5 +286,22 @@ public class ShortcutActivity extends ActionBarActivity implements
         } else {
             return null;
         }
+    }
+
+    private int getPhonePosition(String phone){
+        Cursor cursor;
+        String tmpPhone;
+
+        for(int i = 0; i < adapter.getCount(); i++){
+            cursor = (Cursor)adapter.getItem(i);
+            if (cursor.moveToPosition(i)) {
+                tmpPhone = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                if ( tmpPhone.contentEquals(phone)) {
+                    Log.d(MainActivity.TAG, "Found match");
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 }

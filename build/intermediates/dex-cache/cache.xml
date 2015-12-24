@@ -2,32 +2,32 @@
 <items version="2" >
 
     <item
-        jar="C:\git_repositories\OneClickCall_AS\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\jars\libs\internal_impl-21.0.3.jar"
+        jar="C:\git_repositories\OneClickCall_AS\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\classes.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
-        <dex dex="C:\git_repositories\OneClickCall_AS\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-bd8e0236761cebbdbb5ce5cffef1560dfd6531d4.jar" />
+        sha1="f8efd0096475e0daf054267b61544e10dc776503">
+        <dex dex="C:\git_repositories\OneClickCall_AS\app\build\intermediates\pre-dexed\debug\classes-b0c36ca5510c360dd22b4f29524e579f9d9fad9f.jar" />
     </item>
     <item
-        jar="C:\git_repositories\OneClickCall_AS\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\jars\classes.jar"
+        jar="C:\git_repositories\OneClickCall_AS\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.1\jars\classes.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
-        <dex dex="C:\git_repositories\OneClickCall_AS\app\build\intermediates\pre-dexed\debug\classes-b5770b3e8f309029b9b6876a8c354de1746f2bb4.jar" />
+        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
+        <dex dex="C:\git_repositories\OneClickCall_AS\app\build\intermediates\pre-dexed\debug\classes-1e1a2dfb1925615c14f23b144e029ab09f61f765.jar" />
     </item>
     <item
-        jar="C:\Users\Irina\AppData\Local\Android\sdk1\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
+        jar="C:\git_repositories\OneClickCall_AS\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\libs\internal_impl-22.2.1.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
-        <dex dex="C:\git_repositories\OneClickCall_AS\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-d14e3c1e8e3bc87f7e97a30585fe9a28f0693b2b.jar" />
+        sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
+        <dex dex="C:\git_repositories\OneClickCall_AS\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.1-c2cf0b6111cf9d29925023bb1177a67c3a75f216.jar" />
     </item>
     <item
-        jar="C:\git_repositories\OneClickCall_AS\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\21.0.3\jars\classes.jar"
+        jar="C:\Users\Irina\AppData\Local\Android\sdk1\extras\android\m2repository\com\android\support\support-annotations\22.2.1\support-annotations-22.2.1.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
-        <dex dex="C:\git_repositories\OneClickCall_AS\app\build\intermediates\pre-dexed\debug\classes-14d1aa23e1565d4e506f02655c03c02d14d23f10.jar" />
+        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
+        <dex dex="C:\git_repositories\OneClickCall_AS\app\build\intermediates\pre-dexed\debug\support-annotations-22.2.1-b7436d97f9b31b51f971ed21e4c1510299661ac1.jar" />
     </item>
 
 </items>
