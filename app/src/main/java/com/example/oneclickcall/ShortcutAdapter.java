@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +53,7 @@ public class ShortcutAdapter extends ArrayAdapter<ShortcutItem> {
         holder.contactIcon.setImageBitmap(Bitmap.createScaledBitmap(rowItem.getContactIcon(), CONTACT_ICON_SIZE, CONTACT_ICON_SIZE, false));
         holder.contactName.setText(rowItem.getName());
         holder.contactPhone.setText(rowItem.getPhone());
+        holder.applicationIcon.setBackgroundColor(Color.rgb(100, 100, 50));
         holder.applicationIcon.setImageBitmap(Bitmap.createScaledBitmap(rowItem.getApplicationIcon(), APP_ICON_SIZE, APP_ICON_SIZE, false));
         
         return convertView;

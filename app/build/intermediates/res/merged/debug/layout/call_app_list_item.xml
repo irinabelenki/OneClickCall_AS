@@ -9,7 +9,8 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp" />
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp" />
 
     <TextView
         android:id="@+id/call_app_name"
@@ -17,6 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:textColor="#000000"
-        android:textSize="20dp" />
+        android:textSize="15dp" />
 
 </LinearLayout><!-- From: file:/C:/git_repositories/OneClickCall_AS/app/src/main/res/layout/call_app_list_item.xml -->
