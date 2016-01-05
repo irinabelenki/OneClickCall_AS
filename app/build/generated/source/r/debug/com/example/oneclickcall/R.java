@@ -1550,6 +1550,7 @@ containing a value of this type.
         public static final int activity_chooser_view_content=0x7f0b0026;
         public static final int alertTitle=0x7f0b0030;
         public static final int always=0x7f0b0016;
+        public static final int application_icon=0x7f0b006e;
         public static final int beginning=0x7f0b0013;
         public static final int buttonCreateShortcut=0x7f0b0050;
         public static final int buttonPanel=0x7f0b0036;
@@ -1562,8 +1563,10 @@ containing a value of this type.
         public static final int checkbox=0x7f0b0038;
         public static final int chronometer=0x7f0b0062;
         public static final int collapseActionView=0x7f0b0017;
+        public static final int contact_icon=0x7f0b006c;
         public static final int contact_name=0x7f0b0056;
         public static final int contact_name_header=0x7f0b0055;
+        public static final int contact_phone=0x7f0b006d;
         public static final int contact_photo=0x7f0b0068;
         public static final int contentPanel=0x7f0b0031;
         public static final int custom=0x7f0b0035;
@@ -1622,9 +1625,6 @@ containing a value of this type.
         public static final int search_voice_btn=0x7f0b004d;
         public static final int select_dialog_listview=0x7f0b004e;
         public static final int shortcut=0x7f0b0039;
-        public static final int shortcut_application=0x7f0b006d;
-        public static final int shortcut_name=0x7f0b006c;
-        public static final int shortcut_phone=0x7f0b006e;
         public static final int showCustom=0x7f0b000f;
         public static final int showHome=0x7f0b0010;
         public static final int showTitle=0x7f0b0011;
@@ -1730,19 +1730,21 @@ containing a value of this type.
         public static final int action_help=0x7f050012;
         public static final int action_settings=0x7f050013;
         public static final int app_name=0x7f050014;
-        public static final int cancel=0x7f050015;
-        public static final int do_not_show_again=0x7f050016;
-        public static final int hello_world=0x7f050017;
-        public static final int help=0x7f050018;
-        public static final int help_message=0x7f050019;
-        public static final int menu_delete=0x7f05001a;
-        public static final int menu_edit=0x7f05001b;
-        public static final int menu_recreate=0x7f05001c;
-        public static final int ok=0x7f05001d;
-        public static final int pick_contact=0x7f05001e;
-        public static final int shortcuts=0x7f05001f;
-        public static final int spinner_prompt=0x7f050020;
-        public static final int status_bar_notification_info_overflow=0x7f050021;
+        public static final int call_using=0x7f050015;
+        public static final int cancel=0x7f050016;
+        public static final int do_not_show_again=0x7f050017;
+        public static final int hello_world=0x7f050018;
+        public static final int help=0x7f050019;
+        public static final int help_message=0x7f05001a;
+        public static final int hint_message=0x7f05001b;
+        public static final int menu_delete=0x7f05001c;
+        public static final int menu_edit=0x7f05001d;
+        public static final int menu_recreate=0x7f05001e;
+        public static final int ok=0x7f05001f;
+        public static final int pick_contact=0x7f050020;
+        public static final int shortcuts=0x7f050021;
+        public static final int spinner_prompt=0x7f050022;
+        public static final int status_bar_notification_info_overflow=0x7f050023;
     }
     public static final class style {
         public static final int AlertDialog_AppCompat=0x7f070074;

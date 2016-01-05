@@ -89,7 +89,11 @@ public class MainActivity extends ActionBarActivity implements
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.help);
-        builder.setMessage(R.string.help_message);
+        if (withAction) {
+            builder.setMessage(R.string.hint_message);
+        } else {
+            builder.setMessage(R.string.help_message);
+        }
         builder.setView(checkBoxView);
         builder.setCancelable(false);
         if(withAction) {

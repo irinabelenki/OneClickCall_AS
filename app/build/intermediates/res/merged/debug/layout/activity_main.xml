@@ -15,7 +15,7 @@
             android:layout_margin="5dp"
             android:text="@string/shortcuts"
             android:textColor="#000"
-            android:textSize="30sp" />
+            android:textSize="20sp" />
 
         <ListView
             android:id="@+id/listView"

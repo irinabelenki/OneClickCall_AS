@@ -11,8 +11,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 public class ShortcutDBHelper extends SQLiteOpenHelper {
@@ -172,9 +170,8 @@ public class ShortcutDBHelper extends SQLiteOpenHelper {
     }
 
     public static Bitmap byteArrayToBitmap(byte[] byteArray) {
-        Bitmap bitmap = BitmapFactory.decodeByteArray(
+        return BitmapFactory.decodeByteArray(
                 byteArray, 0,
                 byteArray.length);
-        return bitmap;
     }
 }
