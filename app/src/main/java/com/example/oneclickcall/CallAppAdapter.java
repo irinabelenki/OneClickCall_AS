@@ -43,7 +43,7 @@ public class CallAppAdapter extends ArrayAdapter<CallAppItem> {
         }
 
         holder.callAppName.setText(rowItem.getName());
-        holder.callAppImage.setImageDrawable(rowItem.getImage());
+        holder.callAppImage.setImageBitmap(rowItem.getImage());
 
         return convertView;
     }

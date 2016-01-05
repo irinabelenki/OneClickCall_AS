@@ -423,8 +423,8 @@ int id action_bar_subtitle 0x7f0b0024
 int id action_bar_title 0x7f0b0023
 int id action_context_bar 0x7f0b0041
 int id action_divider 0x7f0b005f
-int id action_done 0x7f0b0072
-int id action_help 0x7f0b006e
+int id action_done 0x7f0b0073
+int id action_help 0x7f0b006f
 int id action_menu_divider 0x7f0b0002
 int id action_menu_presenter 0x7f0b0003
 int id action_mode_bar 0x7f0b003d
@@ -439,7 +439,8 @@ int id buttonPanel 0x7f0b0036
 int id call_app_icon 0x7f0b0053
 int id call_app_image 0x7f0b0051
 int id call_app_name 0x7f0b0052
-int id call_application_spinner 0x7f0b006a
+int id call_application_spinner 0x7f0b006b
+int id call_using 0x7f0b006a
 int id cancel_action 0x7f0b005c
 int id checkbox 0x7f0b0038
 int id chronometer 0x7f0b0062
@@ -452,12 +453,12 @@ int id custom 0x7f0b0035
 int id customPanel 0x7f0b0034
 int id decor_content_parent 0x7f0b003e
 int id default_activity_button 0x7f0b0029
-int id delete 0x7f0b0071
+int id delete 0x7f0b0072
 int id dialog 0x7f0b001b
 int id disableHome 0x7f0b000c
 int id do_not_show_checkbox 0x7f0b005a
 int id dropdown 0x7f0b001c
-int id edit 0x7f0b0070
+int id edit 0x7f0b0071
 int id edit_query 0x7f0b0042
 int id end 0x7f0b0014
 int id end_padder 0x7f0b0067
@@ -489,7 +490,7 @@ int id photo 0x7f0b0057
 int id progress_circular 0x7f0b0005
 int id progress_horizontal 0x7f0b0006
 int id radio 0x7f0b003a
-int id recreate 0x7f0b006f
+int id recreate 0x7f0b0070
 int id screen 0x7f0b001f
 int id scrollView 0x7f0b0032
 int id search_badge 0x7f0b0044
@@ -504,9 +505,9 @@ int id search_src_text 0x7f0b0049
 int id search_voice_btn 0x7f0b004d
 int id select_dialog_listview 0x7f0b004e
 int id shortcut 0x7f0b0039
-int id shortcut_application 0x7f0b006c
-int id shortcut_name 0x7f0b006b
-int id shortcut_phone 0x7f0b006d
+int id shortcut_application 0x7f0b006d
+int id shortcut_name 0x7f0b006c
+int id shortcut_phone 0x7f0b006e
 int id showCustom 0x7f0b000f
 int id showHome 0x7f0b0010
 int id showTitle 0x7f0b0011

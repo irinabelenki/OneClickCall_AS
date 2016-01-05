@@ -113,23 +113,24 @@ public class ContactActivity extends ListActivity implements
                 Drawable icon = packageManager.getApplicationIcon(info.activityInfo.applicationInfo);
                 String label = packageManager.getApplicationLabel(info.activityInfo.applicationInfo).toString();
                 Log.v(MainActivity.TAG, "Name: " + label);
-                appsList.add(new CallAppItem(label, icon, info.activityInfo.packageName, info.activityInfo.name));
+                appsList.add(new CallAppItem(label, /*icon*/null, info.activityInfo.packageName, info.activityInfo.name));
             }
         }
         if (resolveInfos.size() == 1) {
             Log.i(MainActivity.TAG, "Only one call application");
             ResolveInfo info = resolveInfos.get(0);
-            ShortcutEditor.addShortcut(this,
+            ShortcutEditor.editShortcut(this,
                     contactNameTextView.getText().toString(),
                     phoneNumberTextView.getText().toString(),
                     info.activityInfo.packageName,
-                    info.activityInfo.name);
-            db.createShortcut(new ShortcutItem(contactNameTextView.getText().toString(),
+                    info.activityInfo.name, null, ShortcutEditor.ACTION.ADD);
+        /*    db.createShortcut(new ShortcutItem(contactNameTextView.getText().toString(),
                     packageManager.getApplicationLabel(info.activityInfo.applicationInfo).toString(),
                     packageManager.getApplicationIcon(info.activityInfo.applicationInfo),
                     phoneNumberTextView.getText().toString(),
                     info.activityInfo.packageName,
-                    info.activityInfo.name, ""));
+                    info.activityInfo.name, "", null));
+         */
             finish();
         } else {
             Intent intent = new Intent(this, CallAppActivity.class);
@@ -148,17 +149,18 @@ public class ContactActivity extends ListActivity implements
                     Log.i(MainActivity.TAG, "returned position in application list:" + position);
                     if (position >= 0) {
                         CallAppItem item = appsList.get(position);
-                        ShortcutEditor.addShortcut(this,
+                        ShortcutEditor.editShortcut(this,
                                 contactNameTextView.getText().toString(),
                                 phoneNumberTextView.getText().toString(),
                                 item.getPackageName(),
-                                item.getClassName());
-                        db.createShortcut(new ShortcutItem(contactNameTextView.getText().toString(),
+                                item.getClassName(), null, ShortcutEditor.ACTION.ADD);
+        /*               db.createShortcut(new ShortcutItem(contactNameTextView.getText().toString(),
                                 item.getName(),
                                 item.getImage(),
                                 phoneNumberTextView.getText().toString(),
                                 item.getPackageName(),
-                                item.getClassName(), ""));
+                                item.getClassName(), "", null));
+        */
 
                     }
                     break;

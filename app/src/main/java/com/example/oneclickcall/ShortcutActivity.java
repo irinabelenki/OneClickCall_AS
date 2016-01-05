@@ -9,6 +9,7 @@ import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -65,6 +66,7 @@ public class ShortcutActivity extends AppCompatActivity implements
     private ShortcutItem selectedShortcutItem;
     private ShortcutItem oldShortcutItem;
     private String selectedPhone = null;
+    private Bitmap contactBitmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,8 +136,8 @@ public class ShortcutActivity extends AppCompatActivity implements
 
     private void setCallApplicationData() {
         final PackageManager packageManager = getPackageManager();
-        //Intent callIntent = new Intent(Intent.ACTION_CALL, null);
-        Intent callIntent = new Intent("android.intent.action.CALL_PRIVILEGED", null);
+        Intent callIntent = new Intent(Intent.ACTION_CALL, null);
+        //Intent callIntent = new Intent("android.intent.action.CALL_PRIVILEGED", null);
         callIntent.setData(Uri.parse("tel:" + "1234567890"));
         final List<ResolveInfo> resolveInfos = packageManager.queryIntentActivities(callIntent, 0);
         if (resolveInfos.size() == 0) {
@@ -148,9 +150,10 @@ public class ShortcutActivity extends AppCompatActivity implements
             for (ResolveInfo info : resolveInfos) {
                 //ApplicationInfo appInfo = info.activityInfo.applicationInfo;
                 Drawable icon = packageManager.getApplicationIcon(info.activityInfo.applicationInfo);
+                Bitmap bitmap = ((BitmapDrawable)icon).getBitmap();
                 String label = packageManager.getApplicationLabel(info.activityInfo.applicationInfo).toString();
                 Log.v(MainActivity.TAG, "Name: " + label);
-                appsList.add(new CallAppItem(label, icon, info.activityInfo.packageName, info.activityInfo.name));
+                appsList.add(new CallAppItem(label, bitmap, info.activityInfo.packageName, info.activityInfo.name));
             }
         }
     }
@@ -166,11 +169,14 @@ public class ShortcutActivity extends AppCompatActivity implements
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         data.moveToFirst();
         contactNameTextView.setText(data.getString(1));
-        int photoId = data.getInt(2);
-        Log.i(MainActivity.TAG, "photoId: " + photoId);
-        if(photoId > 0) {
-            Bitmap bitmap = queryContactImage(photoId);
-            contactPhotoImageView.setImageBitmap(bitmap);
+        int contactPhotoId = data.getInt(2);
+        Log.i(MainActivity.TAG, "contactPhotoId: " + contactPhotoId);
+        if (contactPhotoId > 0) {
+            contactBitmap = queryContactImage(contactPhotoId);
+            contactPhotoImageView.setImageBitmap(contactBitmap);
+        } else {
+            contactBitmap = BitmapFactory.decodeResource(this.getResources(),
+                    R.drawable.ic_launcher);
         }
 
         adapter.swapCursor(data);
@@ -218,13 +224,16 @@ public class ShortcutActivity extends AppCompatActivity implements
                     cursor = (Cursor)adapter.getItem(position);
                     selectedShortcutItem.setName(cursor.getString(1));
                     selectedShortcutItem.setPhone(cursor.getString(3));
+                    selectedShortcutItem.setContactIcon(contactBitmap);
 
                     if(selectedShortcutItem.isFilled()) {
-                        ShortcutEditor.addShortcut(ShortcutActivity.this,
+                        ShortcutEditor.editShortcut(ShortcutActivity.this,
                                 selectedShortcutItem.getName(),
                                 selectedShortcutItem.getPhone(),
                                 selectedShortcutItem.getPackageName(),
-                                selectedShortcutItem.getClassName());
+                                selectedShortcutItem.getClassName(),
+                                selectedShortcutItem.getContactIcon(),
+                                ShortcutEditor.ACTION.ADD);
                         db.createShortcut(selectedShortcutItem);
                     } else {
                         Log.e(MainActivity.TAG, "Fill it!");
@@ -243,16 +252,20 @@ public class ShortcutActivity extends AppCompatActivity implements
                     cursor = (Cursor)adapter.getItem(position);
                     selectedShortcutItem.setPhone(cursor.getString(3));
 
-                    ShortcutEditor.removeShortcut(ShortcutActivity.this,
+                    ShortcutEditor.editShortcut(ShortcutActivity.this,
                             oldShortcutItem.getName(),
                             oldShortcutItem.getPhone(),
                             oldShortcutItem.getPackageName(),
-                            oldShortcutItem.getClassName());
-                    ShortcutEditor.addShortcut(ShortcutActivity.this,
+                            oldShortcutItem.getClassName(),
+                            oldShortcutItem.getContactIcon(),
+                            ShortcutEditor.ACTION.REMOVE);
+                    ShortcutEditor.editShortcut(ShortcutActivity.this,
                             selectedShortcutItem.getName(),
                             selectedShortcutItem.getPhone(),
                             selectedShortcutItem.getPackageName(),
-                            selectedShortcutItem.getClassName());
+                            selectedShortcutItem.getClassName(),
+                            selectedShortcutItem.getContactIcon(),
+                            ShortcutEditor.ACTION.ADD);
                     db.updateShortcut(selectedShortcutItem);
                     break;
                 case ILLEGAL:
@@ -288,15 +301,15 @@ public class ShortcutActivity extends AppCompatActivity implements
         }
     }
 
-    private int getPhonePosition(String phone){
+    private int getPhonePosition(String phone) {
         Cursor cursor;
         String tmpPhone;
 
-        for(int i = 0; i < adapter.getCount(); i++){
-            cursor = (Cursor)adapter.getItem(i);
+        for (int i = 0; i < adapter.getCount(); i++) {
+            cursor = (Cursor) adapter.getItem(i);
             if (cursor.moveToPosition(i)) {
                 tmpPhone = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                if ( tmpPhone.contentEquals(phone)) {
+                if (tmpPhone.contentEquals(phone)) {
                     Log.d(MainActivity.TAG, "Found match");
                     return i;
                 }

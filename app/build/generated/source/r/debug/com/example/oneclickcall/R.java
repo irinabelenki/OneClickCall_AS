@@ -1540,8 +1540,8 @@ containing a value of this type.
         public static final int action_bar_title=0x7f0b0023;
         public static final int action_context_bar=0x7f0b0041;
         public static final int action_divider=0x7f0b005f;
-        public static final int action_done=0x7f0b0072;
-        public static final int action_help=0x7f0b006e;
+        public static final int action_done=0x7f0b0073;
+        public static final int action_help=0x7f0b006f;
         public static final int action_menu_divider=0x7f0b0002;
         public static final int action_menu_presenter=0x7f0b0003;
         public static final int action_mode_bar=0x7f0b003d;
@@ -1556,7 +1556,8 @@ containing a value of this type.
         public static final int call_app_icon=0x7f0b0053;
         public static final int call_app_image=0x7f0b0051;
         public static final int call_app_name=0x7f0b0052;
-        public static final int call_application_spinner=0x7f0b006a;
+        public static final int call_application_spinner=0x7f0b006b;
+        public static final int call_using=0x7f0b006a;
         public static final int cancel_action=0x7f0b005c;
         public static final int checkbox=0x7f0b0038;
         public static final int chronometer=0x7f0b0062;
@@ -1569,12 +1570,12 @@ containing a value of this type.
         public static final int customPanel=0x7f0b0034;
         public static final int decor_content_parent=0x7f0b003e;
         public static final int default_activity_button=0x7f0b0029;
-        public static final int delete=0x7f0b0071;
+        public static final int delete=0x7f0b0072;
         public static final int dialog=0x7f0b001b;
         public static final int disableHome=0x7f0b000c;
         public static final int do_not_show_checkbox=0x7f0b005a;
         public static final int dropdown=0x7f0b001c;
-        public static final int edit=0x7f0b0070;
+        public static final int edit=0x7f0b0071;
         public static final int edit_query=0x7f0b0042;
         public static final int end=0x7f0b0014;
         public static final int end_padder=0x7f0b0067;
@@ -1606,7 +1607,7 @@ containing a value of this type.
         public static final int progress_circular=0x7f0b0005;
         public static final int progress_horizontal=0x7f0b0006;
         public static final int radio=0x7f0b003a;
-        public static final int recreate=0x7f0b006f;
+        public static final int recreate=0x7f0b0070;
         public static final int screen=0x7f0b001f;
         public static final int scrollView=0x7f0b0032;
         public static final int search_badge=0x7f0b0044;
@@ -1621,9 +1622,9 @@ containing a value of this type.
         public static final int search_voice_btn=0x7f0b004d;
         public static final int select_dialog_listview=0x7f0b004e;
         public static final int shortcut=0x7f0b0039;
-        public static final int shortcut_application=0x7f0b006c;
-        public static final int shortcut_name=0x7f0b006b;
-        public static final int shortcut_phone=0x7f0b006d;
+        public static final int shortcut_application=0x7f0b006d;
+        public static final int shortcut_name=0x7f0b006c;
+        public static final int shortcut_phone=0x7f0b006e;
         public static final int showCustom=0x7f0b000f;
         public static final int showHome=0x7f0b0010;
         public static final int showTitle=0x7f0b0011;

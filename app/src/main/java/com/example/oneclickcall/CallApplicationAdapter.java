@@ -7,6 +7,9 @@ package com.example.oneclickcall;
 import java.util.ArrayList;
 import java.util.Iterator;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +53,10 @@ public class CallApplicationAdapter extends ArrayAdapter<CallAppItem> {
         TextView nameTextView = (TextView) row.findViewById(R.id.call_app_name);
         ImageView iconImageView = (ImageView) row.findViewById(R.id.call_app_icon);
         nameTextView.setText(callAppItem.getName());
-        iconImageView.setImageDrawable(callAppItem.getImage());
+        //iconImageView.setImageDrawable(callAppItem.getImage());
+
+        int ICON_SIZE = 72;
+        iconImageView.setImageBitmap(Bitmap.createScaledBitmap(callAppItem.getImage(), ICON_SIZE, ICON_SIZE, false));
         return row;
     }
 

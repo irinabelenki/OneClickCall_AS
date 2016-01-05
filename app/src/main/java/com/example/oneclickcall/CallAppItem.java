@@ -8,11 +8,11 @@ import android.os.Parcelable;
 
 public class CallAppItem implements Parcelable, Comparable<CallAppItem> {
     private String name;
-    private Drawable image;
+    private Bitmap image;
     private String packageName;
     private String className;
 
-    public CallAppItem(String name, Drawable image, String packageName, String className) {
+    public CallAppItem(String name, Bitmap image, String packageName, String className) {
         this.name = name;
         this.image = image;
         this.packageName = packageName;
@@ -27,7 +27,7 @@ public class CallAppItem implements Parcelable, Comparable<CallAppItem> {
     public CallAppItem(Parcel in) {
         name = in.readString();
         Bitmap bitmap = (Bitmap) in.readParcelable(getClass().getClassLoader());
-        image = new BitmapDrawable(bitmap);
+        image = bitmap;
     }
 
     public String getName() {
@@ -38,11 +38,11 @@ public class CallAppItem implements Parcelable, Comparable<CallAppItem> {
         this.name = name;
     }
 
-    public Drawable getImage() {
+    public Bitmap getImage() {
         return image;
     }
 
-    public void setImage(Drawable image) {
+    public void setImage(Bitmap image) {
         this.image = image;
     }
 
@@ -68,7 +68,7 @@ public class CallAppItem implements Parcelable, Comparable<CallAppItem> {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         if (image != null) {
-            Bitmap bitmap = (Bitmap) ((BitmapDrawable) image).getBitmap();
+            Bitmap bitmap = image;
             dest.writeParcelable(bitmap, flags);
         } else {
             dest.writeParcelable(null, flags);

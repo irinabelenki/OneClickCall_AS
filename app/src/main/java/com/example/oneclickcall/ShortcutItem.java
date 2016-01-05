@@ -10,20 +10,21 @@ public class ShortcutItem implements Parcelable {
     private int id;
     private String name;
     private String application;
-    private Drawable applicationIcon;
+    private Bitmap applicationIcon;
     private String phone;
     private String packageName;
     private String className;
     private String contactId;
+    private Bitmap contactIcon;
 
     public ShortcutItem() {
         this.id = -1;
     }
 
     public ShortcutItem(int id, String name,
-                        String application, Drawable applicationIcon,
+                        String application, Bitmap applicationIcon,
                         String phone,
-                        String packageName, String className, String contactId) {
+                        String packageName, String className, String contactId, Bitmap contactIcon) {
         super();
         this.id = id;
         this.name = name;
@@ -33,12 +34,13 @@ public class ShortcutItem implements Parcelable {
         this.packageName = packageName;
         this.className = className;
         this.contactId = contactId;
+        this.contactIcon = contactIcon;
     }
 
     public ShortcutItem(String name,
-                        String application, Drawable applicationIcon,
+                        String application, Bitmap applicationIcon,
                         String phone,
-                        String packageName, String className, String contactId) {
+                        String packageName, String className, String contactId, Bitmap contactIcon) {
         super();
         this.name = name;
         this.application = application;
@@ -47,6 +49,7 @@ public class ShortcutItem implements Parcelable {
         this.packageName = packageName;
         this.className = className;
         this.contactId = contactId;
+        this.contactIcon = contactIcon;
     }
 
     public ShortcutItem(ShortcutItem other) {
@@ -58,6 +61,7 @@ public class ShortcutItem implements Parcelable {
         packageName = other.getPackageName();
         className = other.getClassName();
         contactId = other.getContactId();
+        contactIcon = other.getContactIcon();
     }
 
     public ShortcutItem(Parcel in) {
@@ -65,13 +69,17 @@ public class ShortcutItem implements Parcelable {
         name = in.readString();
         application = in.readString();
 
-        Bitmap bitmap = (Bitmap)in.readParcelable(getClass().getClassLoader());
-        applicationIcon = new BitmapDrawable(bitmap);
+        Bitmap bitmap;
+        bitmap = (Bitmap)in.readParcelable(getClass().getClassLoader());
+        applicationIcon = bitmap;
 
         phone = in.readString();
         packageName = in.readString();
         className = in.readString();
         contactId = in.readString();
+
+        bitmap = (Bitmap)in.readParcelable(getClass().getClassLoader());
+        contactIcon = bitmap;
     }
 
     public int getId() {
@@ -99,11 +107,11 @@ public class ShortcutItem implements Parcelable {
         this.application = application;
     }
 
-    public Drawable getApplicationIcon() {
+    public Bitmap getApplicationIcon() {
         return applicationIcon;
     }
 
-    public void setApplicationIcon(Drawable applicationIcon) {
+    public void setApplicationIcon(Bitmap applicationIcon) {
         this.applicationIcon = applicationIcon;
     }
 
@@ -139,6 +147,14 @@ public class ShortcutItem implements Parcelable {
         this.contactId = contactId;
     }
 
+    public Bitmap getContactIcon() {
+        return contactIcon;
+    }
+
+    public void setContactIcon(Bitmap contactIcon) {
+        this.contactIcon = contactIcon;
+    }
+
     @Override
     public String toString() {
         return "ShortcutItem: id=" + id + ", name=" + name +
@@ -158,13 +174,17 @@ public class ShortcutItem implements Parcelable {
         dest.writeString(name);
         dest.writeString(application);
 
-        Bitmap bitmap = (Bitmap)((BitmapDrawable) applicationIcon).getBitmap();
+        Bitmap bitmap;
+        bitmap = applicationIcon;
         dest.writeParcelable(bitmap, flags);
 
         dest.writeString(phone);
         dest.writeString(packageName);
         dest.writeString(className);
         dest.writeString(contactId);
+
+        bitmap = contactIcon;
+        dest.writeParcelable(bitmap, flags);
     }
 
     public static final Parcelable.Creator<ShortcutItem> CREATOR = new Parcelable.Creator<ShortcutItem>() {

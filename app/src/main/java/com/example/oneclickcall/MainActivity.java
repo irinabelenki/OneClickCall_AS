@@ -147,11 +147,13 @@ public class MainActivity extends ActionBarActivity implements
         selectedShortcutItem = shortcutAdapter.getItem(menuInfo.position);
         switch (menuItem.getItemId()) {
             case R.id.recreate:
-                ShortcutEditor.addShortcut(this,
+                ShortcutEditor.editShortcut(this,
                         selectedShortcutItem.getName(),
                         selectedShortcutItem.getPhone(),
                         selectedShortcutItem.getPackageName(),
-                        selectedShortcutItem.getClassName());
+                        selectedShortcutItem.getClassName(),
+                        selectedShortcutItem.getContactIcon(),
+                        ShortcutEditor.ACTION.ADD);
                 return true;
             case R.id.edit:
                 Intent intent = new Intent(this, ShortcutActivity.class);
@@ -159,11 +161,13 @@ public class MainActivity extends ActionBarActivity implements
                 startActivityForResult(intent, SHORTCUT_ACTIVITY_RESULT);
                 return true;
             case R.id.delete:
-                ShortcutEditor.removeShortcut(this,
+                ShortcutEditor.editShortcut(this,
                         selectedShortcutItem.getName(),
                         selectedShortcutItem.getPhone(),
                         selectedShortcutItem.getPackageName(),
-                        selectedShortcutItem.getClassName());
+                        selectedShortcutItem.getClassName(),
+                        selectedShortcutItem.getContactIcon(),
+                        ShortcutEditor.ACTION.REMOVE);
                 db.deleteShortcut(selectedShortcutItem.getId());
                 updateList();
                 return true;
