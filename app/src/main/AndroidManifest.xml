@@ -27,14 +27,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
+        <!--activity
             android:name=".ContactActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
             android:name=".CallAppActivity"
             android:label="@string/app_name" >
-        </activity>
+        </activity-->
         <activity
             android:name=".ShortcutActivity"
             android:label="@string/app_name" >
