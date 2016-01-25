@@ -24,14 +24,18 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements
         AdapterView.OnItemClickListener {
 
     public static final String TAG = "MainActivity";
     public static final String CONTACT_ID = "CONTACT_ID";
+    public static final String CONTACT_KEY = "CONTACT_KEY";
+    public static final String CONTACT_URI = "CONTACT_URI";
     public static final String SHORTCUT_ITEM = "SHORTCUT_ITEM";
     private static final int CONTACT_PICKER_RESULT = 1001;
+    private static final int CONTACT_PICKER_RESULT_1 = 1011;
     private static final int SHORTCUT_ACTIVITY_RESULT = 1003;
     ShortcutDBHelper db = new ShortcutDBHelper(this);
     private ListView listView;
@@ -190,8 +194,12 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void pickContact() {
+    /*
         Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         startActivityForResult(intent, CONTACT_PICKER_RESULT);
+    */
+        Intent intent = new Intent(this, ContactsActivity.class);
+        startActivityForResult(intent, CONTACT_PICKER_RESULT_1);
     }
 
     @Override
@@ -200,6 +208,18 @@ public class MainActivity extends AppCompatActivity implements
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
+                case CONTACT_PICKER_RESULT_1:
+                    if (data != null) {
+                        Bundle bundle = data.getExtras();
+                        long id = bundle.getLong(CONTACT_ID);
+                        String contactId = String.valueOf(id);
+
+                        Intent intent = new Intent(this, ShortcutActivity.class);
+                        intent.putExtra(CONTACT_ID, contactId);
+                        startActivityForResult(intent, SHORTCUT_ACTIVITY_RESULT);
+                    }
+
+                    break;
                 case CONTACT_PICKER_RESULT:
                     try {
                         Uri uri = data.getData();

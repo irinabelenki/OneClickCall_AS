@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:2:1-44:12
+ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:2:1-48:12
 	package
 		ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:3:5-39
 		INJECTED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml
@@ -42,7 +42,7 @@ ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:
 	android:name
 		ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:14:22-69
 application
-ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:16:5-42:19
+ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:16:5-46:19
 MERGED from [com.android.support:appcompat-v7:22.2.1] C:\git_repositories\OneClickCall_AS\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.1\AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:support-v4:22.2.1] C:\git_repositories\OneClickCall_AS\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\AndroidManifest.xml:22:5-20
 	android:label
@@ -69,9 +69,15 @@ category#android.intent.category.LAUNCHER
 ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:27:17-77
 	android:name
 		ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:27:27-74
-activity#com.example.oneclickcall.ShortcutActivity
-ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:38:9-41:20
+activity#com.example.oneclickcall.ContactsActivity
+ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:30:9-33:20
 	android:label
-		ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:40:13-45
+		ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:32:13-45
 	android:name
-		ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:39:13-45
+		ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:31:13-45
+activity#com.example.oneclickcall.ShortcutActivity
+ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:42:9-45:20
+	android:label
+		ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:44:13-45
+	android:name
+		ADDED from C:\git_repositories\OneClickCall_AS\app\src\main\AndroidManifest.xml:43:13-45

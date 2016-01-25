@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".LinearLayout">
+
+    <EditText
+        android:id="@+id/search_edittext"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:textColor="#000"
+        android:textSize="15dp"
+        android:drawableRight="@android:drawable/ic_menu_search"
+        android:hint="Search contact.."
+        android:inputType="textVisiblePassword"/> />
+
+    <ListView
+        android:id="@+id/contacts_listview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:listSelector="#00000000" />
+
+</LinearLayout><!-- From: file:/C:/git_repositories/OneClickCall_AS/app/src/main/res/layout/contacts_list_activity.xml -->

@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
@@ -48,19 +49,29 @@ public class ShortcutActivity extends AppCompatActivity implements
 
     static final String[] PROJECTION = new String[]{
             ContactsContract.Contacts._ID,
-            ContactsContract.Contacts.DISPLAY_NAME,
+            Build.VERSION.SDK_INT
+                    >= Build.VERSION_CODES.HONEYCOMB ?
+                    ContactsContract.Contacts.DISPLAY_NAME_PRIMARY :
+                    ContactsContract.Contacts.DISPLAY_NAME,
             ContactsContract.Contacts.PHOTO_ID,
             ContactsContract.CommonDataKinds.Phone.NUMBER,
     };
 
     static final String[] fromColumns = {
-            ContactsContract.Contacts.DISPLAY_NAME,
+            Build.VERSION.SDK_INT
+                    >= Build.VERSION_CODES.HONEYCOMB ?
+                    ContactsContract.Contacts.DISPLAY_NAME_PRIMARY :
+                    ContactsContract.Contacts.DISPLAY_NAME,
             ContactsContract.Contacts.PHOTO_ID,
             ContactsContract.CommonDataKinds.Phone.NUMBER,};
 
     static final int[] toViews = {R.id.contact_name,
             R.id.photo,
             R.id.phone_number,};
+
+    private static final int DISPLAY_NAME_INDEX = 1;
+    private static final int PHOTO_ID_INDEX = 2;
+    private static final int PHONE_NUMBER_INDEX = 3;
 
     private String contactId;
     private ShortcutItem selectedShortcutItem;
@@ -77,7 +88,7 @@ public class ShortcutActivity extends AppCompatActivity implements
         contactPhotoImageView = (ImageView)findViewById(R.id.contact_photo);
 
         listView = (ListView)findViewById(R.id.phone_number_listview);
-        adapter = new SimpleCursorAdapter(this, R.layout.contacts_list_item,
+        adapter = new SimpleCursorAdapter(this, R.layout.phone_number_item,
                 null, fromColumns, toViews, 0);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -163,22 +174,33 @@ public class ShortcutActivity extends AppCompatActivity implements
                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                 PROJECTION,
                 ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?", new String[]{contactId},
-                "DISPLAY_NAME ASC");
+                //"DISPLAY_NAME ASC"
+                ContactsContract.Contacts.SORT_KEY_PRIMARY);
     }
 
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        data.moveToFirst();
-        contactNameTextView.setText(data.getString(1));
-        int contactPhotoId = data.getInt(2);
-        Log.i(MainActivity.TAG, "contactPhotoId: " + contactPhotoId);
-        if (contactPhotoId > 0) {
-            contactBitmap = queryContactImage(contactPhotoId);
-            contactPhotoImageView.setImageBitmap(contactBitmap);
-        } else {
-            contactBitmap = BitmapFactory.decodeResource(this.getResources(),
-                    R.drawable.ic_launcher);
-        }
+        if (data.moveToFirst()) {
+            //int columnCount = data.getColumnCount();
+            //Log.i(MainActivity.TAG, "column count: " + columnCount);
+            //String[] columnNames = data.getColumnNames();
+            //for (int i = 0; i < columnCount; i++) {
+            //    Log.i(MainActivity.TAG, columnNames[i]);
+            //}
 
+            String contactName = data.getString(DISPLAY_NAME_INDEX);
+            if (contactName != null) {
+                contactNameTextView.setText(contactName);
+            }
+            int contactPhotoId = data.getInt(PHOTO_ID_INDEX);
+            Log.i(MainActivity.TAG, "contactPhotoId: " + contactPhotoId);
+            if (contactPhotoId > 0) {
+                contactBitmap = queryContactImage(contactPhotoId);
+                contactPhotoImageView.setImageBitmap(contactBitmap);
+            } else {
+                contactBitmap = BitmapFactory.decodeResource(this.getResources(),
+                        R.drawable.ic_launcher);
+            }
+        }
         adapter.swapCursor(data);
 
         switch (action) {
@@ -222,8 +244,8 @@ public class ShortcutActivity extends AppCompatActivity implements
 
                     position = listView.getCheckedItemPosition();
                     cursor = (Cursor)adapter.getItem(position);
-                    selectedShortcutItem.setName(cursor.getString(1));
-                    selectedShortcutItem.setPhone(cursor.getString(3));
+                    selectedShortcutItem.setName(cursor.getString(DISPLAY_NAME_INDEX));
+                    selectedShortcutItem.setPhone(cursor.getString(PHONE_NUMBER_INDEX));
                     selectedShortcutItem.setContactIcon(contactBitmap);
 
                     if(selectedShortcutItem.isFilled()) {
@@ -250,7 +272,7 @@ public class ShortcutActivity extends AppCompatActivity implements
 
                     position = listView.getCheckedItemPosition();
                     cursor = (Cursor)adapter.getItem(position);
-                    selectedShortcutItem.setPhone(cursor.getString(3));
+                    selectedShortcutItem.setPhone(cursor.getString(PHONE_NUMBER_INDEX));
 
                     ShortcutEditor.editShortcut(ShortcutActivity.this,
                             oldShortcutItem.getName(),
