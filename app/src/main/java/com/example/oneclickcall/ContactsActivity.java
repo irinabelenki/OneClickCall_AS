@@ -51,9 +51,9 @@ public class ContactsActivity extends AppCompatActivity implements
 
     @SuppressLint("InlinedApi")
     private static final String SELECTION =
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ?
-                    ContactsContract.Contacts.DISPLAY_NAME_PRIMARY + " LIKE ?" :
-                    ContactsContract.Contacts.DISPLAY_NAME + " LIKE ?";//  + " AND " + ContactsContract.Contacts.HAS_PHONE_NUMBER + " > 0";
+            "(" + (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ?
+            ContactsContract.Contacts.DISPLAY_NAME_PRIMARY :
+            ContactsContract.Contacts.DISPLAY_NAME) + " LIKE ?"  + ") AND (" + ContactsContract.Contacts.HAS_PHONE_NUMBER + "=1)";
 
     private static final int CONTACT_ID_INDEX = 0;
     private static final int LOOKUP_KEY_INDEX = 1;
@@ -121,6 +121,7 @@ public class ContactsActivity extends AppCompatActivity implements
     public Loader<Cursor> onCreateLoader(int loaderId, Bundle args) {
         searchString = searchEditText.getText().toString();
         selectionArgs[0] = "%" + searchString + "%";
+
         return new CursorLoader(
                 this,
                 ContactsContract.Contacts.CONTENT_URI,

@@ -24,15 +24,12 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements
         AdapterView.OnItemClickListener {
 
     public static final String TAG = "MainActivity";
     public static final String CONTACT_ID = "CONTACT_ID";
-    public static final String CONTACT_KEY = "CONTACT_KEY";
-    public static final String CONTACT_URI = "CONTACT_URI";
     public static final String SHORTCUT_ITEM = "SHORTCUT_ITEM";
     private static final int CONTACT_PICKER_RESULT = 1001;
     private static final int CONTACT_PICKER_RESULT_1 = 1011;
@@ -194,10 +191,9 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void pickContact() {
-    /*
-        Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-        startActivityForResult(intent, CONTACT_PICKER_RESULT);
-    */
+        //Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+        //startActivityForResult(intent, CONTACT_PICKER_RESULT);
+
         Intent intent = new Intent(this, ContactsActivity.class);
         startActivityForResult(intent, CONTACT_PICKER_RESULT_1);
     }
