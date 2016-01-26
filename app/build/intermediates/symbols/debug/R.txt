@@ -408,11 +408,12 @@ int drawable abc_textfield_default_mtrl_alpha 0x7f020037
 int drawable abc_textfield_search_activated_mtrl_alpha 0x7f020038
 int drawable abc_textfield_search_default_mtrl_alpha 0x7f020039
 int drawable abc_textfield_search_material 0x7f02003a
-int drawable ic_launcher 0x7f02003b
-int drawable notification_template_icon_bg 0x7f02003f
-int drawable radio_off 0x7f02003c
-int drawable radio_on 0x7f02003d
-int drawable single_radio_choice 0x7f02003e
+int drawable ic_contact_picture 0x7f02003b
+int drawable ic_launcher 0x7f02003c
+int drawable notification_template_icon_bg 0x7f020040
+int drawable radio_off 0x7f02003d
+int drawable radio_on 0x7f02003e
+int drawable single_radio_choice 0x7f02003f
 int id action0 0x7f0b005a
 int id action_bar 0x7f0b0040
 int id action_bar_activity_content 0x7f0b0000

@@ -198,7 +198,7 @@ public class ShortcutActivity extends AppCompatActivity implements
                 contactPhotoImageView.setImageBitmap(contactBitmap);
             } else {
                 contactBitmap = BitmapFactory.decodeResource(this.getResources(),
-                        R.drawable.ic_launcher);
+                        R.drawable.ic_contact_picture);
             }
         }
         adapter.swapCursor(data);
