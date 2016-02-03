@@ -6,4 +6,4 @@
 		
 	<item android:state_checked="true" 
 		android:drawable="@drawable/radio_on" />
-</selector><!-- From: file:/C:/git_repositories/OneClickCall_AS/app/src/main/res/drawable-xhdpi/single_radio_choice.xml -->
+</selector><!-- From: file:/C:/Users/Irina/AndroidStudioProjects/OneClickCall_AS/app/src/main/res/drawable-xhdpi/single_radio_choice.xml -->

@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements
     public static final String CONTACT_ID = "CONTACT_ID";
     public static final String SHORTCUT_ITEM = "SHORTCUT_ITEM";
     private static final int CONTACT_PICKER_RESULT = 1001;
-    private static final int CONTACT_PICKER_RESULT_1 = 1011;
+    private static final int CONTACT_PICKER_RESULT_CONTACT_ACTIVITY = 1011;
     private static final int SHORTCUT_ACTIVITY_RESULT = 1003;
     ShortcutDBHelper db = new ShortcutDBHelper(this);
     private ListView listView;
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements
         //startActivityForResult(intent, CONTACT_PICKER_RESULT);
 
         Intent intent = new Intent(this, ContactsActivity.class);
-        startActivityForResult(intent, CONTACT_PICKER_RESULT_1);
+        startActivityForResult(intent, CONTACT_PICKER_RESULT_CONTACT_ACTIVITY);
     }
 
     @Override
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case CONTACT_PICKER_RESULT_1:
+                case CONTACT_PICKER_RESULT_CONTACT_ACTIVITY:
                     if (data != null) {
                         Bundle bundle = data.getExtras();
                         long id = bundle.getLong(CONTACT_ID);
