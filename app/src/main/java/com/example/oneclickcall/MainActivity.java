@@ -74,6 +74,13 @@ public class MainActivity extends AppCompatActivity implements
         registerForContextMenu(listView);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(TAG, "on resume **************************");
+        updateList();
+    }
+
     private void showHelpDialog(boolean withAction) {
         View checkBoxView = View.inflate(this, R.layout.help_dialog, null);
         CheckBox checkBox = (CheckBox) checkBoxView.findViewById(R.id.do_not_show_checkbox);
@@ -195,9 +202,11 @@ public class MainActivity extends AppCompatActivity implements
         //startActivityForResult(intent, CONTACT_PICKER_RESULT);
 
         Intent intent = new Intent(this, ContactsActivity.class);
-        startActivityForResult(intent, CONTACT_PICKER_RESULT_CONTACT_ACTIVITY);
+        //startActivityForResult(intent, CONTACT_PICKER_RESULT_CONTACT_ACTIVITY);
+        startActivity(intent);
     }
 
+    /*
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -237,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements
             Log.w(TAG, "Warning: activity result not ok");
         }
     }
-
+*/
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {

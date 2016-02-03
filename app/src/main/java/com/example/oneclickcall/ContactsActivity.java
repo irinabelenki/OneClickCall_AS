@@ -68,6 +68,8 @@ public class ContactsActivity extends AppCompatActivity implements
     private String searchString;
     private String[] selectionArgs = { searchString };
 
+    private static final int SHORTCUT_ACTIVITY_REQUEST = 2000;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contacts_list_activity);
@@ -88,10 +90,16 @@ public class ContactsActivity extends AppCompatActivity implements
                     contactKey = cursor.getString(LOOKUP_KEY_INDEX);
                     contactUri = ContactsContract.Contacts.getLookupUri(contactId, contactKey);
 
-                    Intent data = new Intent();
-                    data.putExtra(MainActivity.CONTACT_ID, contactId);
-                    setResult(RESULT_OK, data);
-                    finish();
+                    //Intent data = new Intent();
+                    //data.putExtra(MainActivity.CONTACT_ID, contactId);
+                    //setResult(RESULT_OK, data);
+                    //finish();
+
+                    Intent intent = new Intent(ContactsActivity.this, ShortcutActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(MainActivity.CONTACT_ID, String.valueOf(contactId));
+                    intent.putExtras(bundle);
+                    startActivityForResult(intent, SHORTCUT_ACTIVITY_REQUEST);
                 }
             }
         });
@@ -141,5 +149,24 @@ public class ContactsActivity extends AppCompatActivity implements
     public void onLoaderReset(Loader<Cursor> loader) {
         // Delete the reference to the existing Cursor
         cursorAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case SHORTCUT_ACTIVITY_REQUEST:
+                    finish();
+                    break;
+            }
+        } else {
+            Log.w(MainActivity.TAG, "Warning: activity result not ok");
+            switch (requestCode) {
+                case SHORTCUT_ACTIVITY_REQUEST:
+                    break;
+            }
+        }
     }
 }
