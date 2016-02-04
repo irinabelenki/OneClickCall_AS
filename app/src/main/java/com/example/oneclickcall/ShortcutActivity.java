@@ -1,6 +1,7 @@
 package com.example.oneclickcall;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -49,8 +50,7 @@ public class ShortcutActivity extends AppCompatActivity implements
 
     static final String[] PROJECTION = new String[]{
             ContactsContract.Contacts._ID,
-            Build.VERSION.SDK_INT
-                    >= Build.VERSION_CODES.HONEYCOMB ?
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ?
                     ContactsContract.Contacts.DISPLAY_NAME_PRIMARY :
                     ContactsContract.Contacts.DISPLAY_NAME,
             ContactsContract.Contacts.PHOTO_ID,
@@ -58,14 +58,14 @@ public class ShortcutActivity extends AppCompatActivity implements
     };
 
     static final String[] fromColumns = {
-            Build.VERSION.SDK_INT
-                    >= Build.VERSION_CODES.HONEYCOMB ?
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ?
                     ContactsContract.Contacts.DISPLAY_NAME_PRIMARY :
                     ContactsContract.Contacts.DISPLAY_NAME,
             ContactsContract.Contacts.PHOTO_ID,
             ContactsContract.CommonDataKinds.Phone.NUMBER,};
 
-    static final int[] toViews = {R.id.contact_name,
+    static final int[] toViews = {
+            R.id.contact_name,
             R.id.photo,
             R.id.phone_number,};
 
@@ -194,7 +194,7 @@ public class ShortcutActivity extends AppCompatActivity implements
             int contactPhotoId = data.getInt(PHOTO_ID_INDEX);
             Log.i(MainActivity.TAG, "contactPhotoId: " + contactPhotoId);
             if (contactPhotoId > 0) {
-                contactBitmap = queryContactImage(contactPhotoId);
+                contactBitmap = queryContactImage(contactPhotoId, this);
                 contactPhotoImageView.setImageBitmap(contactBitmap);
             } else {
                 contactBitmap = BitmapFactory.decodeResource(this.getResources(),
@@ -302,8 +302,8 @@ public class ShortcutActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    private Bitmap queryContactImage(int imageDataRow) {
-        Cursor c = getContentResolver().query(ContactsContract.Data.CONTENT_URI, new String[]{
+    public static Bitmap queryContactImage(int imageDataRow, Context context) {
+        Cursor c = context.getContentResolver().query(ContactsContract.Data.CONTENT_URI, new String[]{
                 ContactsContract.CommonDataKinds.Photo.PHOTO
         }, ContactsContract.Data._ID + "=?", new String[]{
                 Integer.toString(imageDataRow)

@@ -9,6 +9,7 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
@@ -28,25 +30,26 @@ public class ContactsActivity extends AppCompatActivity implements
 
     @SuppressLint("InlinedApi")
     private final static String[] FROM_COLUMNS = {
-            Build.VERSION.SDK_INT
-                    >= Build.VERSION_CODES.HONEYCOMB ?
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ?
                     ContactsContract.Contacts.DISPLAY_NAME_PRIMARY :
-                    ContactsContract.Contacts.DISPLAY_NAME
+                    ContactsContract.Contacts.DISPLAY_NAME,
+            ContactsContract.Contacts.PHOTO_ID
     };
 
     private final static int[] TO_IDS = {
-            R.id.display_name
+            R.id.display_name,
+            R.id.display_icon
     };
 
     @SuppressLint("InlinedApi")
     private static final String[] PROJECTION = {
             ContactsContract.Contacts._ID,
             ContactsContract.Contacts.LOOKUP_KEY,
-            Build.VERSION.SDK_INT
-                    >= Build.VERSION_CODES.HONEYCOMB ?
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ?
                     ContactsContract.Contacts.DISPLAY_NAME_PRIMARY :
                     ContactsContract.Contacts.DISPLAY_NAME,
-            ContactsContract.Contacts.HAS_PHONE_NUMBER
+            ContactsContract.Contacts.PHOTO_ID,
+            //ContactsContract.Contacts.HAS_PHONE_NUMBER
     };
 
     @SuppressLint("InlinedApi")
@@ -57,6 +60,8 @@ public class ContactsActivity extends AppCompatActivity implements
 
     private static final int CONTACT_ID_INDEX = 0;
     private static final int LOOKUP_KEY_INDEX = 1;
+    public static final int DISPLAY_NAME_INDEX = 2;
+    public static final int PHOTO_ID_INDEX = 3;
 
     private ListView contactsListView;
     private long contactId;
@@ -64,6 +69,7 @@ public class ContactsActivity extends AppCompatActivity implements
     private Uri contactUri;
     private SimpleCursorAdapter cursorAdapter;
     private EditText searchEditText;
+    private Cursor mCursor = null;
 
     private String searchString;
     private String[] selectionArgs = { searchString };
@@ -75,10 +81,14 @@ public class ContactsActivity extends AppCompatActivity implements
         setContentView(R.layout.contacts_list_activity);
 
         contactsListView = (ListView)findViewById(R.id.contacts_listview);
-        cursorAdapter = new SimpleCursorAdapter(this,
+        //cursorAdapter = new SimpleCursorAdapter(
+        /*
+        cursorAdapter = new ImageCursorAdapter(
+                this,
                 R.layout.contacts_list_item,
-                null,
-                FROM_COLUMNS, TO_IDS,
+                mCursor,
+                FROM_COLUMNS,
+                TO_IDS,
                 0);
         contactsListView.setAdapter(cursorAdapter);
         contactsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -103,6 +113,7 @@ public class ContactsActivity extends AppCompatActivity implements
                 }
             }
         });
+        */
         searchEditText = (EditText)findViewById(R.id.search_edittext);
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -141,8 +152,38 @@ public class ContactsActivity extends AppCompatActivity implements
     }
 
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        mCursor = cursor;
+        cursorAdapter = new ImageCursorAdapter(
+                this,
+                R.layout.contacts_list_item,
+                mCursor,
+                FROM_COLUMNS,
+                TO_IDS,
+                0);
+        contactsListView.setAdapter(cursorAdapter);
+        contactsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i(MainActivity.TAG, "Clicked on position " + position);
+                Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+                if (cursor.moveToPosition(position)) {
+                    contactId = cursor.getLong(CONTACT_ID_INDEX);
+                    contactKey = cursor.getString(LOOKUP_KEY_INDEX);
+                    contactUri = ContactsContract.Contacts.getLookupUri(contactId, contactKey);
+
+                    Intent intent = new Intent(ContactsActivity.this, ShortcutActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(MainActivity.CONTACT_ID, String.valueOf(contactId));
+                    intent.putExtras(bundle);
+                    startActivityForResult(intent, SHORTCUT_ACTIVITY_REQUEST);
+                }
+            }
+        });
+
+
+
         // Put the result Cursor in the adapter for the ListView
         cursorAdapter.swapCursor(cursor);
+
     }
 
     @Override
