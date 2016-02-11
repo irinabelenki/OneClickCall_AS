@@ -2,7 +2,7 @@
 manifest
 ADDED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml:2:1-48:12
 	package
-		ADDED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml:3:5-39
+		ADDED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml:3:5-44
 		INJECTED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml
 		INJECTED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml
 	android:versionName
@@ -53,12 +53,12 @@ MERGED from [com.android.support:support-v4:22.2.1] C:\Users\Irina\AndroidStudio
 		ADDED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml:18:9-45
 	android:theme
 		ADDED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml:20:9-40
-activity#com.example.oneclickcall.MainActivity
+activity#com.irinabelenki.oneclickcall.MainActivity
 ADDED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml:21:9-29:20
 	android:label
 		ADDED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml:23:13-45
 	android:name
-		ADDED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml:22:13-41
+		ADDED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml:22:13-70
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
 ADDED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml:24:13-28:29
 action#android.intent.action.MAIN
@@ -69,15 +69,15 @@ category#android.intent.category.LAUNCHER
 ADDED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml:27:17-77
 	android:name
 		ADDED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml:27:27-74
-activity#com.example.oneclickcall.ContactsActivity
+activity#com.irinabelenki.oneclickcall.ContactsActivity
 ADDED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml:30:9-33:20
 	android:label
 		ADDED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml:32:13-45
 	android:name
-		ADDED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml:31:13-45
-activity#com.example.oneclickcall.ShortcutActivity
+		ADDED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml:31:13-74
+activity#com.irinabelenki.oneclickcall.ShortcutActivity
 ADDED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml:42:9-45:20
 	android:label
 		ADDED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml:44:13-45
 	android:name
-		ADDED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml:43:13-45
+		ADDED from C:\Users\Irina\AndroidStudioProjects\OneClickCall_AS\app\src\main\AndroidManifest.xml:43:13-74
